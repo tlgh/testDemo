@@ -11,6 +11,7 @@ public class OrganizationDaoImpl extends BaseDaoImpl<Organization, String>
 
 	@Override
 	protected Class<Organization> getEntityClass() {
+		//TODO: asdas
 		return Organization.class;
 	}
 
