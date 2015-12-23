@@ -1,0 +1,229 @@
+[
+    {
+        "fullName": "系统管理员",
+        "gunState": 0,
+        "id": "0507379a-9b96-41fc-993d-d3862389572a",
+        "inMaster": false,
+        "isFinger": 0,
+        "loginName": "zyadmin",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "org": {
+            "id": "cc6bd42c-7276-4104-a88b-220bb1cb06f4",
+            "name": "下城区公安分局"
+        },
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "何欢",
+        "gunState": 0,
+        "id": "74376aac-5487-448f-a09a-963fee85611c",
+        "idNumber": "",
+        "inMaster": true,
+        "isFinger": 0,
+        "loginName": "hehuan",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "mobilePhone": "13606565305",
+        "officeTelephone": "",
+        "org": {
+            "id": "cc6bd42c-7276-4104-a88b-220bb1cb06f4",
+            "name": "下城区公安分局"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 1
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "何晓东",
+        "gunState": 0,
+        "id": "aa7c044c-0992-427d-98df-9e1cdfdbd90e",
+        "idNumber": "",
+        "inMaster": false,
+        "isFinger": 0,
+        "loginName": "hexiaodong",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "mobilePhone": "13567577218",
+        "officeTelephone": "",
+        "org": {
+            "id": "cc6bd42c-7276-4104-a88b-220bb1cb06f4",
+            "name": "下城区公安分局"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "主要负责人",
+        "gunState": 0,
+        "id": "8eb6402e-a75f-4d98-9ff5-8d8ce0fb83e8",
+        "idNumber": "",
+        "inMaster": false,
+        "isFinger": 0,
+        "loginName": "zy1",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "name": "局长办公室"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "一般负责人",
+        "gunState": 0,
+        "id": "d9507e41-ee7c-4392-8987-7b60f2edd0b0",
+        "idNumber": "",
+        "inMaster": true,
+        "isFinger": 0,
+        "loginName": "yb1",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "name": "局长办公室"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "审核领导",
+        "gunState": 0,
+        "id": "d521a0ad-10bb-4dc5-8a61-b187fdd8aaac",
+        "idNumber": "",
+        "inMaster": false,
+        "isFinger": 0,
+        "loginName": "shld",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "name": "局长办公室"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "枪管员",
+        "gunState": 0,
+        "id": "31e165f2-c0bd-4d0d-bfbd-f5097ca021b9",
+        "idNumber": "",
+        "inMaster": true,
+        "isFinger": 0,
+        "loginName": "qgy",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "name": "局长办公室"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "枪管监督",
+        "gunState": 0,
+        "id": "0c13d13a-642b-4882-9108-4199dd6e4154",
+        "idNumber": "",
+        "inMaster": true,
+        "isFinger": 0,
+        "loginName": "qgjd",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "name": "局长办公室"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "用枪督察",
+        "gunState": 0,
+        "id": "17085b4f-9da9-4f04-8bbe-7cfb303f93c5",
+        "idNumber": "",
+        "inMaster": false,
+        "isFinger": 0,
+        "loginName": "yqdc",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "name": "局长办公室"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "警员",
+        "gunState": 0,
+        "id": "333d43ad-6486-47ef-bbcc-f8b11d02f881",
+        "idNumber": "",
+        "inMaster": true,
+        "isFinger": 0,
+        "loginName": "pol",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "3d9495f0-b19f-4d73-8162-b225f2fb0632",
+            "name": "刑侦大队"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    },
+    {
+        "armLicenseCode": "",
+        "fullName": "123",
+        "gunState": 0,
+        "id": "3d45afc4-dd35-4b19-a312-62651a88234a",
+        "idNumber": "",
+        "inMaster": false,
+        "isFinger": 0,
+        "loginName": "123",
+        "mobilePhone": "",
+        "officeTelephone": "",
+        "org": {
+            "id": "90782142-802c-43e1-8599-06a9f5084077",
+            "name": "经侦大队"
+        },
+        "policeCode": "",
+        "policeRank": "PR_ROOT0101",
+        "sex": 0,
+        "shortPhoneCode": "",
+        "willSync2Master": 0
+    }
+]
+

@@ -1,0 +1,43 @@
+<!doctype html>
+<html class="no-js" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <script src="../../js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+<div class="well">
+    <form id="organizationForm" action="javascript:void(0);">
+        <div class="form-group">
+            <label for="selectParent">上级机构</label>
+            <select class="form-control"  id="selectParent" name="parent.id"></select>
+        </div>
+        <div class="form-group">
+            <label for="inputName">机构名称</label>
+            <input type="text" class="form-control" id="inputName" name="name" placeholder="请输入机构名称">
+        </div>
+        <div class="form-group">
+            <label for="inputDescription">描述</label>
+            <textarea class="form-control" id="inputDescription" name="description" placeholder="请输入机构描述"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">确定</button>
+        <button type="button" onclick="window.closeDlg();" class="btn btn-default">取消</button>
+    </form>
+</div>
+<script data-main="../../js/config.js" src="../../js/vendor/require.js"></script>
+
+</body>
+</html>

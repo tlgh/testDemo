@@ -1,0 +1,55 @@
+<!doctype html>
+<html class="no-js" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <script src="../../js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+<div class="well">
+    <form id="userForm" action="javascript:void(0);">
+        <div class="form-group">
+            <label for="selectOrganization">所属机构</label>
+            <select class="form-control" id="selectOrganization" name="organization.id"></select>
+        </div>
+        <div class="form-group">
+            <label for="inputName">姓名</label>
+            <input type="text" class="form-control" id="inputName" name="name" placeholder="请输入姓名">
+        </div>
+        <div class="form-group">
+            <label for="inputUsername">用户名</label>
+            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="请输入用户名">
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">邮箱</label>
+            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="请输入邮箱">
+        </div>
+        <div class="form-group">
+            <label for="inputMobile">电话</label>
+            <input type="text" class="form-control" id="inputMobile" name="mobile" placeholder="请输入机构名称">
+        </div>
+        <div class="form-group">
+            <label for="inputBirthday">生日</label>
+            <input type="date" class="form-control" id="inputBirthday" name="birthday" placeholder="请选择生日">
+        </div>
+        <button type="submit" class="btn btn-primary">确定</button>
+        <button type="button" onclick="window.closeDlg();" class="btn btn-default">取消</button>
+    </form>
+</div>
+<script data-main="../../js/config.js" src="../../js/vendor/require.js"></script>
+
+</body>
+</html>

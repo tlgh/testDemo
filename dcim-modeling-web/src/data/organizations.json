@@ -1,0 +1,37 @@
+{
+    "accessible": "accessible",
+    "children": [
+        {
+            "accessible": "accessible",
+            "children": [],
+            "createChildAble": false,
+            "id": "33a590bd-feb4-4409-9f34-13f2cd08eb8f",
+            "index": 0,
+            "name": "局长办公室",
+            "treeNodeType": "department"
+        },
+        {
+            "accessible": "accessible",
+            "children": [],
+            "createChildAble": false,
+            "id": "3d9495f0-b19f-4d73-8162-b225f2fb0632",
+            "index": 1,
+            "name": "刑侦大队",
+            "treeNodeType": "department"
+        },
+        {
+            "accessible": "accessible",
+            "children": [],
+            "createChildAble": false,
+            "id": "90782142-802c-43e1-8599-06a9f5084077",
+            "index": 2,
+            "name": "经侦大队",
+            "treeNodeType": "department"
+        }
+    ],
+    "createChildAble": true,
+    "id": "cc6bd42c-7276-4104-a88b-220bb1cb06f4",
+    "index": 0,
+    "name": "下城区公安分局",
+    "treeNodeType": "unit"
+}
