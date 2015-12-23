@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 活动到期通知任务begin -->
+	<!-- 要调用的工作类 -->
+	<bean name="eventDueNoticeJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.jpz.dcim.modeling.task.quartz.TemplateJob" />
+	</bean>
+	<!-- 要调用的工作类 -->
+	<bean id="cronTrigger" lazy-init="true"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="eventDueNoticeJob" />
+		<!-- run every morning at 8 AM -->
+		<property name="cronExpression" value="0 0 8 * * ?" />
+		<!-- run every minute at 6 second -->
+		<!-- <property name="cronExpression" value="5 * * * * ?" /> -->
+	</bean>
+	<!-- 活动到期通知任务end -->
+
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+		lazy-init="false">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
+
+
+</beans>

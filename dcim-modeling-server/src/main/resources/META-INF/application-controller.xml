@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="pers.ksy.common.spring4.UTF8StringHttpMessageConverter" />
+			<bean class="pers.ksy.common.spring4.ExtGsonHttpMessageConverter">
+				<constructor-arg name="datePattern" value="yyyy-MM-dd HH:mm:ss" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="10000000000" />
+		<property name="maxInMemorySize" value="10240" />
+	</bean>
+
+	<!-- config Controller Json filter -->
+	<bean id="jsonFilterAdvice" class="pers.ksy.common.spring4.ControllerSerializeAdviceFilter">
+		<property name="datePattern" value="yyyy-MM-dd HH:mm:ss" />
+		<property name="jsonSerializerClass"
+			value="pers.ksy.common.serialization.json.GsonSerializer" />
+	</bean>
+
+	<aop:config>
+		<aop:aspect id="jsonFilterAspect" ref="jsonFilterAdvice">
+			<aop:pointcut id="jsonFilterPointcut"
+				expression="execution(* com.jpz.dcim.modeling.web.controller.*.*(..))" />
+			<aop:around pointcut-ref="jsonFilterPointcut" method="doAround" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
