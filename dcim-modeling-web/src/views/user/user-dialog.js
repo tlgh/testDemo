@@ -1,6 +1,7 @@
 /**
  * Created by boil on 2015-12-14.
  */
+"use strict"
 define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'], function(userService, userModel, organizationModel, arrayUtil) {
 	var selectOrganization = $('#selectOrganization');
 	var form = new ZY.UI.Form("userForm");
@@ -19,7 +20,7 @@ define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'],
 			option.text(name);
 			option.val(child.id);
 			selectOrganization.append(option);
-		})
+		});
 	});
 
 	//register events
@@ -31,7 +32,7 @@ define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'],
 			if (result.header.success) {
 				window.closeDlg(result.body);
 			}
-		})
+		});
 		return false;
 	});
 
