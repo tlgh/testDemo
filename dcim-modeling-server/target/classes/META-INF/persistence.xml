@@ -12,9 +12,9 @@
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/dcim" />
 			<property name="openjpa.jdbc.DBDictionary" value="mysql" />
 			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="123456" />
+			<property name="javax.persistence.jdbc.password" value="root" />
 
-			<property name="openjpa.Log" value="DefaultLevel=WARN, Tool=INFO, SQL=TRACE" />
+			<property name="openjpa.Log" value="DefaultLevel=INFO, Tool=INFO, SQL=TRACE" />
 
 			<property name="openjpa.FetchBatchSize" value="0" />
 			<property name="openjpa.RemoteCommitProvider" value="sjvm" />

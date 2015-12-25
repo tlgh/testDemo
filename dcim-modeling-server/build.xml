@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="emp" default="usage" basedir=".">
+	<property name="src.dir" value="${basedir}/src/main/java" />
+	<property name="lib.dir" value="${basedir}/WebContent/WEB-INF/lib"/>
+	<property name="log.dir" value="${basedir}/logs" />
+	<property name="test_src.dir" value="${basedir}/test" />
+	<property name="classes.dir" value="${basedir}/build/classes" />
+	<property name="war.dir" value="${basedir}/build/war" />
+	<property name="junit.results.dir"   value="${basedir}/build/test-results" />
+	<property name="instrumented.dir" value="${basedir}/build/instrumented" />
+	<property name="reports.dir" value="${basedir}/build/reports" />
+	<property name="reports.xml.dir" value="${reports.dir}/junit-xml" />
+	<property name="reports.html.dir" value="${reports.dir}/junit-html" />
+	<property name="scripts.dir" value="${basedir}/scripts" />
+	<property name="coverage.xml.dir" value="${reports.dir}/cobertura-xml" />
+	<property name="coverage.summaryxml.dir" value="${reports.dir}/cobertura-summary-xml" />
+	<property name="coverage.html.dir" value="${reports.dir}/cobertura-html" />
+	<property name="env" value="prod"/>
+	
+	
+	<property name="jsdist.dir" value="${basedir}/WebContent/resources/compressed" />
+	<path id="project.class.path">
+		<pathelement path="${classes.dir}" />  
+	    <fileset dir="${lib.dir}">
+	        <include name="**/*.jar"/>
+	    </fileset>
+	</path>
+	
+	<target name="usage">
+		<echo message="">
+Usage:    build target-name
+Available targets:
+init	- init project environments and creating nessary folders.
+compile	- compile all the source files.
+test	- run all the tests.
+initDataToDevContext	- as the name
+initDataToTestContext	- as the name
+initDataToRuntimeContext	- as the name
+war		- war the project
+		</echo>
+	</target>
+	
+	<target name="systemProperties">
+    	<echo message="Java Runtime Environment version: ${java.version}"/>
+		<echo message="Java Runtime Environment vendor: ${java.vendor}"/>
+		<echo message="Java Runtime Environment vendor URL: ${java.vendor.url}"/>
+		<echo message="Java installation directory: ${java.home}"/>
+		<echo message="Java Virtual Machine specification version: ${java.vm.specification.version}"/>
+		<echo message="Java Virtual Machine specification vendor: ${java.vm.specification.vendor}"/>
+		<echo message="Java Virtual Machine specification name: ${java.vm.specification.name}"/>
+		<echo message="Java Virtual Machine implementation version: ${java.vm.version}"/>
+		<echo message="Java Virtual Machine implementation vendor: ${java.vm.vendor}"/>
+		<echo message="Java Virtual Machine implementation name: ${java.vm.name}"/>
+		<echo message="Java Runtime Environment specification version: ${java.specification.version}"/>
+		<echo message="Java Runtime Environment specification vendor: ${java.specification.vendor}"/>
+		<echo message="Java Runtime Environment specification name: ${java.specification.name}"/>
+		<echo message="Java class format version number: ${java.class.version}"/>
+		<echo message="Java class path: ${java.class.path}"/>
+		<echo message="List of paths to search when loading libraries: ${java.library.path}"/>
+		<echo message="Path of extension directory or directories: ${java.ext.dirs}"/>
+		<echo message="Default temp file path: ${java.io.tmpdir}"/>
+		<echo message="Operating system name: ${os.name}"/>
+		<echo message="Operating system architecture: ${os.arch}"/>
+		<echo message="Operating system version: ${os.version}"/>
+  	</target>
+	
+	<!-- =================================================================== -->
+	<!-- Initialize                                                          -->
+	<!-- =================================================================== -->
+	<target name="init">
+	    <tstamp>
+	        <format property="TODAY" pattern="d-MM-yy"/>
+	    </tstamp>
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${war.dir}" />
+		<mkdir dir="${instrumented.dir}" />
+		<mkdir dir="${reports.xml.dir}" />
+		<mkdir dir="${reports.html.dir}" />
+		<mkdir dir="${coverage.xml.dir}" />
+		<mkdir dir="${coverage.summaryxml.dir}" />
+		<mkdir dir="${coverage.html.dir}" />
+		<mkdir dir="${db.dir}" />
+		<mkdir dir="${log.dir}" />
+	</target>
+    
+    <!-- =================================================================== -->
+    <!-- PREPARE Porject                                                     -->
+    <!-- =================================================================== -->  
+  	<target name="prepare">
+  		<echo level="info">+-----------------------------------------------------+</echo>
+  		<echo level="info">| 		PREPARE    FOR   THE   PROJECT				 |</echo>
+  		<echo level="info">+-----------------------------------------------------+</echo>    	 
+  	</target>	
+	
+    <!-- =================================================================== -->
+    <!-- 							Clean                                    -->
+    <!-- =================================================================== -->
+    <target name="clean">
+    	<delete dir="${classes.dir}"/>
+    	<delete dir="${war.dir}"/>
+    	<delete dir="${instrumented.dir}" />
+		<delete dir="${reports.dir}" />
+		<delete file="cobertura.log" />
+		<delete file="cobertura.ser" />
+    </target>	
+	
+	<target name="clean_classes">
+	    <delete dir="${classes.dir}"/>
+	</target>	
+	
+    <target name="compile" depends="clean,init"  description="compile the source " >  
+    	<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">| 			COMPLE   THE   PROJECT                 |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>    	 
+      	<mkdir dir="${classes.dir}"/>
+        <copy todir="${classes.dir}">
+    		<fileset dir="${src.dir}">
+    			<include name="*"/>
+    			<include name="init/**/*.*"/>
+    			<include name="sup_init/**/*.*"/>
+    			<include name="dev_config/*.*"/>
+    			<include name="runtime_config/*.*"/>
+    			<include name="unittest_config/*.*"/>
+    			<include name="sup_config/*.*"/>
+    		</fileset>
+        	<fileset dir="${test_src.dir}">
+        		<include name="resources/*.*"/>
+        	</fileset>
+        </copy>
+    	<javac destdir="${classes.dir}" encoding="utf-8" debug="on" includejavaruntime="yes" includeantruntime="yes">
+    		<classpath refid="project.class.path"/> 
+    		<src path="${src.dir}"/>
+    		<src path="${test_src.dir}"/>
+    	</javac>
+	</target>	
+	
+	<target name="compile_src" depends="clean_classes,init"  description="compile the src source " >  
+	    	<echo level="info">+---------------------------------------------------+</echo>
+	        <echo level="info">|                                                   |</echo>
+	        <echo level="info">| 			COMPLE   THE   PROJECT                 |</echo>
+	        <echo level="info">|                                                   |</echo>
+	        <echo level="info">+---------------------------------------------------+</echo>    	 
+	      	<mkdir dir="${classes.dir}"/>
+	        <copy todir="${classes.dir}">
+	    		<fileset dir="${src.dir}">
+	    			<include name="*"/>
+	    			<include name="configs/*.*"/>
+	    			<include name="configs/message/*.*"/>
+	    		</fileset>
+	        </copy> 
+	    	
+	    	<javac destdir="${classes.dir}" encoding="utf-8" debug="on" includejavaruntime="yes" includeantruntime="yes">
+	    		<classpath refid="project.class.path"/> 
+	    		<src path="${src.dir}"/>
+	    		<src path="${init_src.dir}"/>
+	    	</javac>
+	   </target>
+    
+
+    <!-- =================================================================== -->
+    <!-- 						Full Test                                    -->
+    <!-- =================================================================== -->
+	<patternset id="test.exclude.files">
+		<!--	
+		<exclude name="**/aop/**/*Test.class"/>
+		<exclude name="**/search/**/*Test.class"/>
+		-->
+	</patternset>
+	<target name="testInit" unless="junit.init">
+		<echo level="info">Begin Unit Test</echo>
+		<delete dir="${junit.results.dir}"/>
+		<mkdir dir="${junit.results.dir}"/>
+		<mkdir dir="${junit.results.dir}/html"/>
+		<property name="junit.init" value="yes"/>
+	</target>
+	<target name="test" depends="compile,testInit,doFrameworkTest,doEmpTest,junitreport">
+	</target>
+	<target name="serviceTest" depends="testInit,doServiceTest,junitreport">
+	</target>
+	<target name="doEmpTest">
+		<echo level="info">Test Emp project</echo>
+		<junit printsummary="true" haltonfailure="true" reloading="false" fork="yes" dir="${basedir}" failureProperty="test.failed">
+			<classpath location="${instrumented.dir}" />
+			<classpath location="${classes.dir}" />
+			<classpath refid="project.class.path" />
+			<formatter type="xml" />
+			<batchtest todir="${junit.results.dir}">
+				<fileset dir="${classes.dir}">
+					<include name="**/emp/**/*Test.class"/>
+					<exclude name="**/emp/integration/**/*Test.class"/>
+					<!--exclude name="**/emp/rest/*Test.class"/-->
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	<target name="doFrameworkTest">
+		<echo level="info">Test Framework</echo>
+		<junit printsummary="true" haltonfailure="true" reloading="false" fork="yes" dir="${basedir}" failureProperty="test.failed">
+			<classpath location="${instrumented.dir}" />
+			<classpath location="${classes.dir}" />
+			<classpath refid="project.class.path" />
+			<formatter type="xml" />
+			<batchtest todir="${junit.results.dir}">
+				<fileset dir="${classes.dir}">
+					<include name="**/framework/**/*Test.class"/>
+					<exclude name="**/framework/comm/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	<target name="doServiceTest">
+		<echo level="info">Test Service</echo>
+		<junit printsummary="true" haltonfailure="true" reloading="false" fork="yes" dir="${basedir}" failureProperty="test.failed">
+			<classpath location="${instrumented.dir}" />
+			<classpath location="${classes.dir}" />
+			<classpath refid="project.class.path" />
+			<formatter type="xml" />
+			<batchtest todir="${junit.results.dir}">
+				<fileset dir="${classes.dir}">
+					<include name="**/service/**/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	<target name="doEntityTest">
+		<echo level="info">Test Entity</echo>
+		<junit printsummary="true" haltonfailure="true" reloading="false" fork="yes" dir="${basedir}" failureProperty="test.failed">
+			<classpath location="${instrumented.dir}" />
+			<classpath location="${classes.dir}" />
+			<classpath refid="project.class.path" />
+			<formatter type="xml" />
+			<batchtest todir="${junit.results.dir}">
+				<fileset dir="${classes.dir}">
+					<include name="**/entity/**/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="doInitTest">
+			<echo level="info">Test Init</echo>
+			<junit printsummary="true" haltonfailure="true" reloading="false" fork="yes" dir="${basedir}" failureProperty="test.failed">
+				<classpath location="${instrumented.dir}" />
+				<classpath location="${classes.dir}" />
+				<classpath refid="project.class.path" />
+				<formatter type="xml" />
+				<batchtest todir="${junit.results.dir}">
+					<fileset dir="${classes.dir}">
+						<include name="**/init/**/*Test.class"/>
+					</fileset>
+				</batchtest>
+			</junit>
+		</target>
+	
+	<target name="doDaoTest">
+		<echo level="info">Test DAO</echo>
+		<junit printsummary="true" haltonfailure="true" reloading="false" fork="yes" dir="${basedir}" failureProperty="test.failed">
+			<classpath location="${instrumented.dir}" />
+			<classpath location="${classes.dir}" />
+			<classpath refid="project.class.path" />
+			<formatter type="xml" />
+			<batchtest todir="${junit.results.dir}">
+				<fileset dir="${classes.dir}">
+					<include name="**/dao/**/*Test.class"/>
+					<exclude name="**/MongoQueryTest.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="junitreport">
+		<junitreport todir="${junit.results.dir}">
+			<fileset dir="${junit.results.dir}">
+			<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${junit.results.dir}/html"/>
+		</junitreport>
+		<junitreport todir="${reports.xml.dir}">
+			<fileset dir="${reports.xml.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${reports.html.dir}" />
+		</junitreport>
+	</target>
+	
+	<target name="demo" depends="compile">
+		<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">|                                                                    |</echo>
+        <echo level="info">|                initialize data                          |</echo>
+        <echo level="info">|                                                                    |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>
+		<java classname="com.zy.emp.init.Demo" fork="true" failonerror="true">
+			<arg value="${env}"/>
+			<classpath refid="project.class.path" />
+		</java>
+	</target>
+	
+	<target name="initDataToDevContext" depends="compile">
+    	<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">| 			initialize data			               |</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>    	 
+		<java classname="com.zy.emp.init.AppInit" fork="true" failonerror="true">
+			<arg value="devel"/>
+			<classpath refid="project.class.path" />
+		</java>
+	</target>
+	
+	<target name="initDictToDevContext" depends="compile">
+    	<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">| 			initialize data			               |</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>    	 
+		<java classname="com.zy.emp.init.DictInit" fork="true" failonerror="true">
+			<arg value="devel"/>
+			<classpath refid="project.class.path" />
+		</java>
+	</target>
+	
+	<target name="initDataToSupPlatform" depends="compile">
+	    	<echo level="info">+---------------------------------------------------+</echo>
+	        <echo level="info">|                                                   |</echo>
+	        <echo level="info">| 			initialize data			               |</echo>
+	        <echo level="info">|                                                   |</echo>
+	        <echo level="info">+---------------------------------------------------+</echo>    	 
+			<java classname="com.zy.emp.init.AppInit" fork="true" failonerror="true">
+				<arg value="sup"/>
+				<classpath refid="project.class.path" />
+			</java>
+		</target>
+	
+	<target name="initDataToTestContext" depends="compile">
+    	<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">| 			initialize data			               |</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>    	 
+		<java classname="com.zy.emp.init.AppInit" fork="true" failonerror="true">
+			<arg value="test"/>
+			<classpath refid="project.class.path" />
+		</java>
+	</target>
+	<target name="initDataToRuntimeContext" >
+    	<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">| 			initialize data			               |</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>    	 
+		<java classname="com.zy.emp.init.AppInit" fork="true" failonerror="true">
+			<arg value="prod"/>
+			<classpath refid="project.class.path" />
+		</java>
+	</target>
+
+	<target name="compress">
+		<echo level="info">+---------------------------------------------------+</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">| 			compress js files		               |</echo>
+        <echo level="info">|                                                   |</echo>
+        <echo level="info">+---------------------------------------------------+</echo>  
+		
+	    <apply executable="java" parallel="false" failonerror="true">  
+	        <fileset dir="WebContent/resources/widgets" includes="*-src.js" />  
+	        <arg line="-jar" />  
+	        <arg path="${lib.dir}/yuicompressor-2.4.8.jar" />  
+	        <arg line="--charset utf-8" />  
+	    	<srcfile/>  
+	        <arg line="-o" />  
+	    	
+	        <mapper type="glob" from="*.js" to="*.js" />  
+	    	<targetfile/>  
+	    </apply>  
+	</target>
+
+	<target name="war" depends="compile">
+    	<echo level="info">+------------------------------------------------------+</echo>
+        <echo level="info">|                                                                        |</echo>
+        <echo level="info">|                      war project                            |</echo>
+        <echo level="info">|      (本指令只能在Linux下执行)              |</echo>
+        <echo level="info">+------------------------------------------------------+</echo>
+		<delete dir="${war.dir}"/>
+		<mkdir dir="${war.dir}" />
+		<copy todir="${war.dir}/classes">
+    		<fileset dir="${classes.dir}" />
+        </copy>
+		<copy tofile="${war.dir}/classes/com/zy/emp/dto/Les.class" file="${basedir}/support/g1/test" />
+		<copy tofile="${war.dir}/scripts/start_db.sh" file="${scripts.dir}/start_db.sh.prod" />
+		<copy tofile="${war.dir}/scripts/stop_db.sh" file="${scripts.dir}/stop_db.sh.prod" />
+		<copy tofile="${war.dir}/scripts/start_db.bat" file="${scripts.dir}/start_db.bat.prod" />
+		<copy tofile="${war.dir}/scripts/stop_db.bat" file="${scripts.dir}/stop_db.bat.prod" />
+		<exec executable="${scripts.dir}/version.sh" failonerror="true"/>
+		<war destfile="${war.dir}/emp.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
+			<fileset dir=".">
+				<include name="scripts/"/>
+				<include name="support/" />
+				<include name="VERSION" />
+				<exclude name="support/g1/"/>
+				<exclude name="scripts/start_db.*"/>
+				<exclude name="scripts/stop_db.*"/>
+			</fileset>
+			<fileset dir="${war.dir}">
+				<include name="scripts/"/>
+			</fileset>			
+			<fileset dir="./WebContent">
+				<exclude name="WEB-INF/lib/g1.jar"/>
+				<exclude name="WEB-INF/lib/wiremock-1.46-standalone.jar"/>
+				<exclude name="WEB-INF/lib/mockito-all-1.9.5.jar"/>
+			</fileset>
+			<classes dir="${war.dir}/classes"/>
+		</war>
+	</target>
+	
+	<target name="build" depends="compile,test,war" />	
+
+	<target name="instrument" depends="init,compile">
+		<delete file="cobertura.ser"/>
+		<delete dir="${instrumented.dir}" />
+
+		<cobertura-instrument todir="${instrumented.dir}">
+			<ignore regex="org.apache.log4j.*" />
+
+			<fileset dir="${classes.dir}">
+				<include name="com/csst/**/*.class" />
+				<exclude name="com/csst/**/*Test.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
+	
+	<target name="coverage-check">
+		<cobertura-check branchrate="34" totallinerate="100" encoding="UTF-8"/>
+	</target>
+
+	<target name="coverage-report">
+		<cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" encoding="UTF-8"/>
+		<cobertura-report srcdir="${init_src.dir}" destdir="${coverage.xml.dir}" format="xml" encoding="UTF-8"/>
+	</target>
+
+	<target name="summary-coverage-report">
+		<cobertura-report srcdir="${src.dir}" destdir="${coverage.summaryxml.dir}" format="summaryXml" encoding="UTF-8"/>
+		<cobertura-report srcdir="${init_src.dir}" destdir="${coverage.summaryxml.dir}" format="summaryXml" encoding="UTF-8"/>
+	</target>
+
+	<target name="alternate-coverage-report">
+		<cobertura-report destdir="${coverage.html.dir}" encoding="UTF-8">
+			<fileset dir="${src.dir}">
+				<include name="com/csst/**/*.java"/>
+			</fileset>
+			<fileset dir="${init_src.dir}">
+				<include name="com/csst/**/*.java"/>
+			</fileset>
+			
+		</cobertura-report>
+	</target>
+	
+	<target name="coverage" depends="compile,instrument,test,coverage-report,summary-coverage-report,alternate-coverage-report" description="Compile, instrument ourself, run the tests and generate JUnit and coverage reports."/>
+	
+	<!-- codeLine -->
+    <target name="JavaCodeLine"  description="compute java code lines">
+       	<echo level="info">+------------------------------------------------------------------------------+</echo>
+            <echo level="info">|		                     Java Source Code                                  |</echo>
+            <echo level="info">|		arg0: source path like '/etc', . is root of project                     |</echo>
+            <echo level="info">|		arg1: extension format like C style                                     |</echo>
+    	 	<echo level="info">|		above args can config one or more,example arg1 is 'java' or 'java,js,c' |</echo>
+        <echo level="info">+------------------------------------------------------------------------------+</echo>  	    	  
+    	<java fork="true" classname="com.csst.tool.CodeLine">
+    	  	<arg  value="${src.dir}/com" />
+    	  	<arg  value="java" />
+    	    <classpath refid="project.class.path" />
+    	</java>    	
+    </target>
+	
+	<!-- codeLine -->
+    <target name="JavaTestCodeLine"  description="compute java test code lines">
+       	<echo level="info">+------------------------------------------------------------------------------+</echo>
+            <echo level="info">|		                    Java Test Source Code                               |</echo>
+            <echo level="info">|		arg0: source path like '/etc', . is root of project                     |</echo>
+            <echo level="info">|		arg1: extension format like C style                                     |</echo>
+    	 	<echo level="info">|		above args can config one or more,example arg1 is 'java' or 'java,js,c' |</echo>
+        <echo level="info">+------------------------------------------------------------------------------+</echo>  	    	  
+    	<java fork="true" classname="com.csst.tool.CodeLine">
+    	  	<arg  value="${test_src.dir}/com" />
+    	  	<arg  value="java" />
+    	    <classpath refid="project.class.path" />
+    	</java>    	
+    </target>	
+	
+	<!-- codeLine -->
+    <target name="JavascriptCodeLine"  description="compute javascript code lines">
+       	<echo level="info">+------------------------------------------------------------------------------+</echo>
+            <echo level="info">|		                      JavaScript Source Code                            |</echo>
+            <echo level="info">|		arg0: source path like '/etc', . is root of project                     |</echo>
+            <echo level="info">|		arg1: extension format like C style                                     |</echo>
+    	 	<echo level="info">|		above args can config one or more,example arg1 is 'java' or 'java,js,c' |</echo>
+        <echo level="info">+------------------------------------------------------------------------------+</echo>  	    	  
+    	<java fork="true" classname="com.csst.tool.CodeLine">
+    	  	<arg  value="./WebContent/resources/js/CSST.UIlib.js,./WebContent/resources/js/frameLaytout.js,./WebContent/resources/js/layout.js" />
+    	  	<arg  value="js" />
+    	    <classpath refid="project.class.path" />
+    	</java>    	
+    </target>	
+	
+	<!-- codeLine -->
+	    <target name="JSPCodeLine"  description="compute jsp code lines">
+	       	<echo level="info">+------------------------------------------------------------------------------+</echo>
+	            <echo level="info">|		                      jsp Source Code                            |</echo>
+	            <echo level="info">|		arg0: source path like '/etc', . is root of project                     |</echo>
+	            <echo level="info">|		arg1: extension format like C style                                     |</echo>
+	    	 	<echo level="info">|		above args can config one or more,example arg1 is 'java' or 'java,js,c' |</echo>
+	        <echo level="info">+------------------------------------------------------------------------------+</echo>  	    	  
+	    	<java fork="true" classname="com.csst.tool.CodeLine">
+	    	  	<arg  value="./WebContent/WEB-INF/views" />
+	    	  	<arg  value="jsp" />
+	    	    <classpath refid="project.class.path" />
+	    	</java>    	
+	    </target>	
+</project>
