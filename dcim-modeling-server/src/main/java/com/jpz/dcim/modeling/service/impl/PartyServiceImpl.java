@@ -17,12 +17,12 @@ import com.jpz.dcim.modeling.model.dao.OrganizationDao;
 import com.jpz.dcim.modeling.model.dao.UserDao;
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
-import com.jpz.dcim.modeling.service.UserService;
+import com.jpz.dcim.modeling.service.PartyService;
 
 
 @Transactional
 @Service
-public class UserServiceImpl implements UserService {
+public class PartyServiceImpl implements PartyService {
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Result addUser(User user) {
-		Organization organization = organizationDao.get(user.getOrganization().getId());
-		user.setOrganization(organization);
+		//Organization organization = organizationDao.get(user.getOrganization().getId());
+		//user.setOrganization(organization);
 		user.setPassword(MD5Util.MD5("123456"));
 		user.setCreateTime(new Date());
 		userDao.save(user);
@@ -96,12 +96,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Result addOrganization(Organization organization) {
-		organization.setCreateTime(new Date());
-		if (null != organization.getParent().getId()) {
-			Organization parent = organizationDao.get(organization.getParent()
-					.getId());
-			organization.setParent(parent);
-		}
+		organization.setCreateTime(new Date());		
 		organizationDao.save(organization);
 		return Result.successResult(organization, null);
 	}
@@ -137,6 +132,18 @@ public class UserServiceImpl implements UserService {
 	public Page<User> findPage(int pageIndex, int pageSize,
 			QueryCondition queryCondition) {
 		return userDao.findByPage(queryCondition, pageIndex, pageSize);
+	}
+
+	@Override
+	public void deleteAllUsers() {
+		
+		
+	}
+
+	@Override
+	public void deleteAllOrganizations() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

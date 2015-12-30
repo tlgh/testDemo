@@ -15,8 +15,7 @@ public class ContextHolder extends ContextLoaderListener {
 	}
 	
 	public static String getContextPath() {
-		return "/META-INF/appcontext.xml";
+		return "/META-INF/application-context.xml";
 	}
-	
 	
 }

@@ -53,8 +53,10 @@ initDataToDatabase: as name
         <echo level="info">|                                                   |</echo>
         <echo level="info">+---------------------------------------------------+</echo>   
         
-		<java classname="com.zy.emp.init.AppInit" fork="true" failonerror="true">
-			<arg value="devel"/>
+		<java classname="com.jpz.dcim.modeling.init.SqlInit" fork="true" failonerror="true">
+			<sysproperty key="file.encoding" value="UTF-8" />  
+			<arg value="initUser.sql"/>
+			<arg value="initOrg.sql"/>
 			<classpath refid="project.class.path" />
 		</java>
 		

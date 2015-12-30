@@ -26,7 +26,7 @@ define(['service/user', 'model/organization', 'util/array', 'ZY'], function(user
 	$('#organizationForm').submit(function() {
 		var organization = form.getValue();
 		organizationModel.add(organization, function(result) {
-			alert(result.header.success ? "添加成功"　 : "添加失败");
+			alert(result.header.success ? "添加成功":"添加失败");
 			if (result.header.success) {
 				window.closeDlg(result.body);
 			}

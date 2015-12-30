@@ -35,7 +35,7 @@ public class Organization implements Serializable{
 		this.id = id;
 	}
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "parent_id")
 	public Organization getParent() {
 		return parent;

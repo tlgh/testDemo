@@ -13,13 +13,13 @@ import pers.ksy.common.model.Result;
 
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
-import com.jpz.dcim.modeling.service.UserService;
+import com.jpz.dcim.modeling.service.PartyService;
 
 @RestController
 @RequestMapping(value = "/organization")
 public class OrganizationController extends BaseController {
 	@Autowired
-	private UserService userService;
+	private PartyService userService;
 
 	@RequestMapping(path = "/list", method = RequestMethod.GET)
 	@SerializationFilter(exclusive = false, target = User.class, fields = {"id", "name" })

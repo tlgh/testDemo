@@ -10,7 +10,7 @@ import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
 
 @SuppressWarnings("rawtypes")
-public interface UserService {
+public interface PartyService {
 	/**
 	 * 组织机构列表
 	 * 
@@ -46,4 +46,9 @@ public interface UserService {
 			QueryCondition queryCondition);
 
 	Result login(String username, String password);
+	
+	void deleteAllUsers();
+	
+	void deleteAllOrganizations();
+	
 }

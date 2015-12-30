@@ -19,16 +19,15 @@ public class SqlFileExecutor {
         List<String> sqlList = new ArrayList<String>();  
   
         try {  
-            InputStream sqlFileIn = new FileInputStream(sqlFile); 
-  
+            InputStream sqlFileIn = new FileInputStream(sqlFile);   
             StringBuffer sqlSb = new StringBuffer();  
             byte[] buff = new byte[1024];  
             int byteRead = 0;  
             while ((byteRead = sqlFileIn.read(buff)) != -1) {  
                 sqlSb.append(new String(buff, 0, byteRead));  
             }  
-  
-            String[] sqlArr = sqlSb.toString().split("(;//s*//r//n)|(;//s*//n)");  
+            int p =  sqlSb.toString().indexOf(";\\r\\n");
+            String[] sqlArr = sqlSb.toString().split("(;\\r\\n)|(;\\n)");  
             for (int i = 0; i < sqlArr.length; i++) {  
                 String sql = sqlArr[i].replaceAll("--.*", "").trim();  
                 if (!sql.equals("")) {  

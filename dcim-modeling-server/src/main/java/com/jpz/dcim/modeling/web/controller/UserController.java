@@ -16,13 +16,13 @@ import pers.ksy.common.orm.QueryCondition;
 import pers.ksy.common.orm.QueryConditionImpl;
 
 import com.jpz.dcim.modeling.model.entity.User;
-import com.jpz.dcim.modeling.service.UserService;
+import com.jpz.dcim.modeling.service.PartyService;
 
 @RestController
 @RequestMapping(value = "/user")
 public class UserController extends BaseController {
 	@Autowired
-	private UserService userService;
+	private PartyService userService;
 
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public Object login(@RequestParam String username,@RequestParam String password) {
