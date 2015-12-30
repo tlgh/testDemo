@@ -47,7 +47,7 @@ public class User implements Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "organization_id", nullable = false)
+	@JoinColumn(name = "organization_id", nullable = true)
 	public Organization getOrganization() {
 		return organization;
 	}

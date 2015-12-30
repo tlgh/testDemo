@@ -1,13 +1,14 @@
 /**
  * Created by boil on 2015-12-14.
  */
-define(['service/user','model/organization', 'ZY'], function (userService, organizationModel) {
+define(['service/user', 'ZY'], function (userService) {
 
     var tree = null, grid = null;
 
     var columns = [
         {name: "username", caption: "登录名", width: 120, type: "String"},
         {name: "name", caption: "姓名", width: 120, type: "String"},
+        {name: "sex", caption: "性别", width: 120, type: "String"},
         {name: "birthday", caption: "生日", width: 200, type: "Date", format: "yyyy-MM-dd"},
         {name: "email", caption: "email", width: 200, type: "String"}
     ];
@@ -16,7 +17,7 @@ define(['service/user','model/organization', 'ZY'], function (userService, organ
 	//state
     function gotoPage(pageSize, pageIndex) {
         var organizationId = tree.getSelectedNode().data.id;
-        organizationModel.users(organizationId, function(result){
+        userService.organizationUsers(organizationId, function(result){
         	if(result.header.success){
         		grid.bind(result.body);
         	}
@@ -81,7 +82,7 @@ define(['service/user','model/organization', 'ZY'], function (userService, organ
 		window.openDlg({
 			url: "user-dialog.html?organizationId="+organizationId, //在应用中需要修改为特定页面的url
 			width: 600,
-			height: 580,
+			height: 630,
 			title: "新增用户",
 			callback: function(organization) {
 				if(organization){

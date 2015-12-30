@@ -1,7 +1,7 @@
 /**
  * Created by boil on 2015-12-14.
  */
-define(['service/user', 'model/organization', 'util/array', 'ZY'], function(userService, organizationModel, arrayUtil) {
+define(['service/user', 'util/array', 'ZY'], function(userService, arrayUtil) {
 	var selectParent = $('#selectParent');
 	var form = new ZY.UI.Form("organizationForm");
 
@@ -25,8 +25,8 @@ define(['service/user', 'model/organization', 'util/array', 'ZY'], function(user
 	//register events
 	$('#organizationForm').submit(function() {
 		var organization = form.getValue();
-		organizationModel.add(organization, function(result) {
-			alert(result.header.success ? "添加成功":"添加失败");
+		userService.addOrganization(organization, function(result) {
+			alert(result.header.success ? "添加成功"　 : "添加失败");
 			if (result.header.success) {
 				window.closeDlg(result.body);
 			}
