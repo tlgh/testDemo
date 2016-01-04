@@ -56,5 +56,7 @@ public interface PartyService {
 	void deleteAllUsers();
 	
 	void deleteAllOrganizations();
+
+	void method4Test();
 	
 }

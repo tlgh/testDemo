@@ -12,4 +12,9 @@ public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 	protected Class<User> getEntityClass() {
 		return User.class;
 	}
+
+	@Override
+	public void method4Test() {
+		throw new RuntimeException("unimplemented method ,only for test");
+	}
 }

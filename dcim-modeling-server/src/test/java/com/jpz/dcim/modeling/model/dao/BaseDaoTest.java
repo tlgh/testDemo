@@ -47,6 +47,21 @@ public class BaseDaoTest extends BaseTestCase{
 		user.setSex((short)0);
 		user.setPassword("123456");
 		dao.save(user);
+		
+		create10Users();
+	}
+	
+	private void create10Users(){
+		for(int i=0;i<10;i++){
+			User u = new User();
+			u.setUsername("user_"+i);
+			u.setName("测试用户_"+i);
+			u.setCreateTime(new Date());
+			u.setLastModifyTime(new Date());
+			u.setSex((short)1);
+			u.setPassword("123456");
+			dao.save(u);
+		}
 	}
 	
 	@Test
@@ -130,6 +145,7 @@ public class BaseDaoTest extends BaseTestCase{
 
 	@Test
 	public void testFindByPageIntIntOrderArray() {
+		
 		fail("Not yet implemented");
 	}
 
