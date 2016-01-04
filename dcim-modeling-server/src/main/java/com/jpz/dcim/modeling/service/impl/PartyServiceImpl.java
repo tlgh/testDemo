@@ -154,4 +154,9 @@ public class PartyServiceImpl implements PartyService {
 		organizationDao.deleteAll();
 	}
 
+	@Override
+	public void method4Test() {
+		throw new RuntimeException("unimplemented service method, only for test");
+	}
+
 }

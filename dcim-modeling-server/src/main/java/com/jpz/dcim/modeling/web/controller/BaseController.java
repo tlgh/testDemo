@@ -2,20 +2,17 @@ package com.jpz.dcim.modeling.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import pers.ksy.common.model.Result;
 
 public class BaseController {
-
+	Log log = LogFactory.getLog(BaseController.class);
 	@ExceptionHandler
 	public Result<String> exp(HttpServletRequest request, Exception ex) {
-		// 记录日志
-		// logger.error(ex.getMessage(), ex);
-		// 根据不同错误转向不同页面
-		ex.printStackTrace();
-		//System.out.println(ex.getMessage());
-		return Result.errorResult(ex.getMessage(), "服务器请求异常");
+		log.error(ex.getMessage(),ex);
+		return Result.errorResult(ex.getMessage(), "服务器请求异常!");
 	}
-
 }

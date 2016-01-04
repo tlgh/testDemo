@@ -30,7 +30,7 @@ public class User implements Serializable {
 	private String name; 
 	
 	@Column(nullable = false, length = 1)
-	private Short sex;  // 0:女/1:男
+	private Short sex = 1;  // 0:女/1:男
 	
 	@Column(nullable = true, unique = true)
 	private String email;
