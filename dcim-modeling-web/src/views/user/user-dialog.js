@@ -28,7 +28,7 @@ define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'],
 		var user = form.getValue();
 		user.birthday = user.birthday + ' 00:00:00';
 		userModel.add(user, function(result) {
-			alert(result.header.success ? "添加成功"　 : "添加失败");
+			alert(result.header.success ? "添加成功":"添加失败");
 			if (result.header.success) {
 				window.closeDlg(result.body);
 			}

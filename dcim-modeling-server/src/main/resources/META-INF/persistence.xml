@@ -8,13 +8,9 @@
 		<class>com.jpz.dcim.modeling.model.entity.Permission</class>
 		<class>com.jpz.dcim.modeling.model.entity.Organization</class>
 		<properties>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/dcim" />
 			<property name="openjpa.jdbc.DBDictionary" value="mysql" />
-			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="123456" />
-
-			<property name="openjpa.Log" value="DefaultLevel=WARN, Tool=INFO, SQL=TRACE" />
+			
+			<property name="openjpa.Log" value="DefaultLevel=INFO, Tool=INFO, SQL=TRACE" />
 
 			<property name="openjpa.FetchBatchSize" value="0" />
 			<property name="openjpa.RemoteCommitProvider" value="sjvm" />

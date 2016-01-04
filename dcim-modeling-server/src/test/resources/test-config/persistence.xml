@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<persistence version="1.0">
+	<persistence-unit name="openjpa">
+		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl
+		</provider>
+		<class>com.jpz.dcim.modeling.model.entity.User</class>
+		<class>com.jpz.dcim.modeling.model.entity.Role</class>
+		<class>com.jpz.dcim.modeling.model.entity.Permission</class>
+		<class>com.jpz.dcim.modeling.model.entity.Organization</class>
+		<properties>
+			<property name="openjpa.jdbc.DBDictionary" value="mysql" />
+			
+			<property name="openjpa.Log" value="DefaultLevel=INFO, Tool=INFO, SQL=TRACE" />
+
+			<property name="openjpa.FetchBatchSize" value="0" />
+			<property name="openjpa.RemoteCommitProvider" value="sjvm" />
+			<property name="openjpa.InitializeEagerly" value="true" />
+			<property name="openjpa.jdbc.SynchronizeMappings"
+				value="buildSchema(ForeignKeys=true,PrimaryKeys=true,Indexes=true,schemaAction=refresh)" />
+			<property name="openjpa.jdbc.QuerySQLCache" value="true(EnableStatistics=true)" />
+			
+			<!-- OpenJPA增强 --> 
+            <property name="openjpa.ClassLoadEnhancement" value="false" />  
+            <property name="openjpa.DynamicEnhancementAgent" value="false" />  
+            <property name="openjpa.RuntimeUnenhancedClasses" value="supported" />  
+             
+
+		</properties>
+	</persistence-unit>
+</persistence>

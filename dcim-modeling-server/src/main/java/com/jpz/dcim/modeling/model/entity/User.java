@@ -22,22 +22,52 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "user")
 public class User implements Serializable {
 
-	private String id;
-	private Organization organization;
-	private String name; // 0:女/1:男
-	private Short sex;
-	private String email;
-	private String username;
-	private String password;
-	private String mobile;
-	private Date birthday;
-	private Date createTime;
-	private Date lastModifyTime;
-	private Date lastLoginTime;
-	private List<Role> roles;
-
 	@Id
 	@GeneratedValue(generator = "uuid-hex")
+	private String id;
+	
+	@Column(nullable = false)
+	private String name; 
+	
+	@Column(nullable = false, length = 1)
+	private Short sex;  // 0:女/1:男
+	
+	@Column(nullable = true, unique = true)
+	private String email;
+	
+	@Column(nullable = false, unique = true)
+	private String username;
+	
+	@Column(nullable = false)
+	private String password;
+	
+	@Column(nullable = true, unique = true)
+	private String mobile;
+	
+	private Date birthday;
+	
+	@Column(name = "create_time", length = 19, nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createTime;
+	
+	@Column(name = "last_modify_time", length = 19)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastModifyTime;
+	
+	@Column(name = "last_login_time", length = 19)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastLoginTime;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST })
+	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") }, uniqueConstraints = { @UniqueConstraint(columnNames = {
+			"user_id", "role_id" }) })
+	private List<Role> roles;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "organization_id", nullable = true)
+	private Organization organization;
+
+	
 	public String getId() {
 		return id;
 	}
@@ -46,8 +76,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "organization_id", nullable = true)
+	
 	public Organization getOrganization() {
 		return organization;
 	}
@@ -56,7 +85,7 @@ public class User implements Serializable {
 		this.organization = organization;
 	}
 
-	@Column(nullable = false)
+	
 	public String getName() {
 		return name;
 	}
@@ -65,7 +94,7 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	@Column(nullable = false, length = 1)
+	
 	public Short getSex() {
 		return sex;
 	}
@@ -74,7 +103,7 @@ public class User implements Serializable {
 		this.sex = sex;
 	}
 
-	@Column(nullable = true, unique = true)
+	
 	public String getEmail() {
 		return email;
 	}
@@ -83,7 +112,7 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	@Column(nullable = false, unique = true)
+	
 	public String getUsername() {
 		return username;
 	}
@@ -92,7 +121,7 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	@Column(nullable = false)
+	
 	public String getPassword() {
 		return password;
 	}
@@ -101,7 +130,7 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	@Column(nullable = true, unique = true)
+	
 	public String getMobile() {
 		return mobile;
 	}
@@ -118,8 +147,7 @@ public class User implements Serializable {
 		this.birthday = birthday;
 	}
 
-	@Column(name = "create_time", length = 19, nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -128,8 +156,7 @@ public class User implements Serializable {
 		this.createTime = createTime;
 	}
 
-	@Column(name = "last_modify_time", length = 19)
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	public Date getLastModifyTime() {
 		return lastModifyTime;
 	}
@@ -138,8 +165,7 @@ public class User implements Serializable {
 		this.lastModifyTime = lastModifyTime;
 	}
 
-	@Column(name = "last_login_time", length = 19)
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}
@@ -148,9 +174,7 @@ public class User implements Serializable {
 		this.lastLoginTime = lastLoginTime;
 	}
 
-	@ManyToMany(cascade = { CascadeType.PERSIST })
-	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") }, uniqueConstraints = { @UniqueConstraint(columnNames = {
-			"user_id", "role_id" }) })
+	
 	public List<Role> getRoles() {
 		return roles;
 	}

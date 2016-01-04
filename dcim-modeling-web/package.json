@@ -3,6 +3,7 @@
     "apache-server-configs": "2.14.0",
     "archiver": "^0.14.3",
     "bootstrap": "3.3.6",
+    "bootstrap-sweetalert": "^0.4.2",
     "del": "^1.1.1",
     "glob": "^5.0.5",
     "gulp": "^3.8.11",
