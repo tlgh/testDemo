@@ -7,9 +7,11 @@ define([
     "util/array"
 ], function (App, stringUtil, arrayUtil) {
 	
+	//define variables
 	var basePath;
 	var organizationPath = '/organization';
 	var userPath = '/user';
+	
     App.Services.User = function () {
 		basePath = App.Constants.BASE_PATH;
     };
@@ -21,6 +23,7 @@ define([
 		    	try{
 		        	return JSON.parse(user);
 		    	}catch(e){
+		    		this.logoff();
 		    		e.print();
 		    	}
 		    }
@@ -29,6 +32,7 @@ define([
 			password = stringUtil.md5(password);
 			$.ajax({
 				type: "POST",
+				showLoading : true,
 				url: basePath + userPath + "/login",
 				data: {
 					username: username,
