@@ -30,7 +30,7 @@ public class UserController extends BaseController {
 	@SerializationFilters(filters = { @SerializationFilter(target = User.class, fields = { "password", "roles" }),
 			@SerializationFilter(target = Organization.class, exclusive = false, fields = { "id", "name" }) })
 	public Object login(@RequestParam String username, @RequestParam String password) {
-		return userService.login(username, password);
+		return Result.successResult(userService.login(username, password), null);
 	}
 
 	@RequestMapping(path = "/page", method = RequestMethod.GET)

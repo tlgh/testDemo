@@ -2,6 +2,7 @@ package com.jpz.dcim.modeling.service;
 
 import java.util.List;
 
+import com.jpz.dcim.modeling.exception.ServiceException;
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
 
@@ -28,7 +29,7 @@ public interface PartyService {
 	
 	void addUser(User user,String orgId);
 
-	void updateUser(User user);
+	void updateUser(User user) throws ServiceException;
 	
 	User getUser(String userId);
 	
@@ -42,7 +43,7 @@ public interface PartyService {
 	 */
 	void addOrganization(Organization organization,String parentId);
 	
-	void updateOrganization(Organization Organization);
+	void updateOrganization(Organization Organization) throws ServiceException;
 
 	Organization getOrganization(String organizationId);
 	
@@ -51,7 +52,7 @@ public interface PartyService {
 	Page<User> findPage(int pageIndex, int pageSize,
 			QueryCondition queryCondition);
 
-	User login(String username, String password);
+	User login(String username, String password) throws ServiceException;
 	
 	void deleteAllUsers();
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.jpz.dcim.modeling.exception.ServiceException;
 import com.jpz.dcim.modeling.model.dao.OrganizationDao;
 import com.jpz.dcim.modeling.model.dao.UserDao;
 import com.jpz.dcim.modeling.model.entity.Organization;
@@ -29,12 +30,12 @@ public class PartyServiceImpl implements PartyService {
 	private OrganizationDao organizationDao;
 
 	@Override
-	public User login(String username, String password) {
+	public User login(String username, String password) throws ServiceException {
 		User user = userDao.getByProperty("username", username);
 		if (null == user) {
-			throw new RuntimeException("用户不存在");
+			throw new ServiceException("用户不存在");
 		} else if (!password.equals(user.getPassword())) {
-			throw new RuntimeException("密码错误");
+			throw new ServiceException("密码错误");
 		}
 		JpaHelper.initialize(user.getOrganization());
 		return user;
@@ -83,11 +84,11 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user) throws ServiceException {
 		Assert.notNull(user.getId());
 		User old = userDao.get(user.getId());
 		if (null == old) {
-			throw new RuntimeException("用户不存在");
+			throw new ServiceException("用户不存在");
 		}
 		user.setUsername(old.getUsername());
 		user.setPassword(old.getPassword());
@@ -118,11 +119,11 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public void updateOrganization(Organization Organization) {
+	public void updateOrganization(Organization Organization) throws ServiceException {
 		Assert.notNull(Organization.getId());
 		Organization old = organizationDao.get(Organization.getId());
 		if (null == old) {
-			throw new RuntimeException("部门不存在");
+			throw new ServiceException("部门不存在");
 		}
 		Organization.setCreateTime(old.getCreateTime());
 		Organization.setLastModifyTime(new Date());
