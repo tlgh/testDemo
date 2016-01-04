@@ -14,7 +14,8 @@ requirejs.config({
 		model: 'model',
 		service: 'service',
 		util: 'util',
-		ZY: 'vendor/zy-ui/ZY.UIlib'
+		ZY: 'vendor/zy-ui/ZY.UIlib',
+		sweetAlert: 'vendor/sweet-alert/sweet-alert'
 	},
 	map: {
 		'*': {
@@ -22,6 +23,9 @@ requirejs.config({
 		}
 	}
 });
-require(['jquery', 'main'], function(jquery, app) {
+require([
+	'jquery',
+	'main'
+], function(jquery, app) {
 	app.initialize();
 });

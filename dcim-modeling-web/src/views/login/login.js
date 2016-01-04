@@ -14,8 +14,6 @@ define(['service/user'], function ( userService) {
         userService.login(loginName, password, function (result) {
             if (result.header.success) {
                 pageToIndex();
-            } else {
-                alert(result.header.message);
             }
         });
         return false;

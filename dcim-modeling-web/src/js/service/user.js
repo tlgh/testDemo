@@ -36,7 +36,7 @@ define([
 					password: password
 				},
                 dataType: 'json',
-				success: function(result){
+				resultHandler: function(result){
 					if (result.header.success) {
 						var user = result.body;
 						window.sessionStorage.setItem(App.Constants.SESSION_USER_KEY, JSON.stringify(user));
@@ -57,7 +57,7 @@ define([
 					name: name
 				},
 				dataType: "json",
-				success: success
+				resultHandler: success
 			});
         },
 		addUser: function(user, success) {
@@ -67,7 +67,7 @@ define([
 				data: JSON.stringify(user),
                 dataType: 'json',
                 contentType: 'application/json;charset=utf-8',
-				success: success
+				resultHandler: success
 			});
 		},
 		organizationTree: function(success) {
@@ -75,7 +75,7 @@ define([
 				type: "GET",
 				url: basePath + organizationPath + "/tree",
 				dataType: "json",
-				success: success
+				resultHandler: success
 			});
 		},
 		organizationList: function(success) {
@@ -83,7 +83,7 @@ define([
 				type: "GET",
 				url: basePath + organizationPath + "/list",
 				dataType: "json",
-				success: success
+				resultHandler: success
 			});
 		},
 		addOrganization: function(organization, success) {
@@ -93,7 +93,7 @@ define([
 				data: JSON.stringify(organization),
                 dataType: 'json',
                 contentType: 'application/json;charset=utf-8',
-				success: success
+				resultHandler: success
 			});
 		},
 		organizationUsers: function(organizationId, success) {
@@ -101,7 +101,7 @@ define([
 				type: "GET",
 				url: basePath + organizationPath + "/" + organizationId + '/users',
 				dataType: "json",
-				success: success
+				resultHandler: success
 			});
 		}
     };

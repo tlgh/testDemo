@@ -1,4 +1,6 @@
-define(function() {
+define([
+	"sweetAlert"
+], function() {
 	var App = {
 		Models: {},
 		Views: {},
@@ -22,6 +24,13 @@ define(function() {
 	 */
 	function ajaxGlobalSetting() {
 		$.ajaxSetup({
+			/***Start Custom Properties***/
+			showLoading: false,
+			showErrorMsg: true,
+			showSuccessMsg: false,
+			msgAlertProvider: 'sweet-alert',
+			resultHandler: null,
+			/***end Custom Properties***/
 			error: function(jqXHR, textStatus, errorThrown) {
 				switch (jqXHR.status) {
 					case (500):
@@ -41,16 +50,44 @@ define(function() {
 				}
 			},
 			success: function(result) {
-				if(!result.header.success){
-					alert(result.header.message);
+				//请求结果错误且需要输出或
+				if ((this.showErrorMsg && !result.header.success) || (this.showSuccessMsg && result.header.success)) {
+					alertMsg(result, this.msgAlertProvider);
+				}
+
+				if (this.resultHandler) {
+					this.resultHandler.apply(this, [result]);
 				}
 			},
-			beforeSend: function () {
-				alert(this.showLoading);
-		    },
-			complete: function(){
-				alert(this.showLoading);
+			beforeSend: function() {
+				if (this.showLoading) {
+
+				}
+			},
+			complete: function() {
+				if (this.showLoading) {
+
+				}
 			}
+		});
+	}
+
+	function alertMsg(result, msgAlertProvider) {
+		var msg = result.header.message;
+		switch (msgAlertProvider) {
+			case 'sweet-alert':
+				sweetAlertMsg(msg, result)
+				break;
+			default:
+				alert(msg);
+				break;
+		}
+	}
+
+	function sweetAlertMsg(msg, result) {
+		swal({
+			title: msg,
+			type: result.header.success ? 'success' : 'error'
 		});
 	}
 
