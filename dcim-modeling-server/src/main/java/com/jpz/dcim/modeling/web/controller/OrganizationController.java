@@ -42,7 +42,7 @@ public class OrganizationController extends BaseController {
 
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Object save(@RequestBody Organization organization) {
-		return userService.addOrganization(organization);
+		return userService.addOrganization(organization,organization.getParent().getId());
 	}
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.PUT)

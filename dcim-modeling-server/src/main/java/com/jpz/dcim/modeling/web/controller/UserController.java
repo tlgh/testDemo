@@ -50,7 +50,7 @@ public class UserController extends BaseController {
 
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Object save(@RequestBody User user) {
-		return userService.addUser(user);
+		return userService.addUser(user,user.getOrganization().getId());
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.PUT)

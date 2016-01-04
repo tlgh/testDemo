@@ -55,11 +55,14 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public Result addUser(User user) {
-		//Organization organization = organizationDao.get(user.getOrganization().getId());
-		//user.setOrganization(organization);
+	public Result addUser(User user,String orgId) {
 		user.setPassword(MD5Util.MD5("123456"));
 		user.setCreateTime(new Date());
+		
+		if(orgId!=null && orgId.isEmpty()==false){
+			Organization org = this.getOrganization(orgId);
+			user.setOrganization(org);
+		}
 		userDao.save(user);
 		return Result.successResult();
 	}
@@ -95,25 +98,28 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public Result addOrganization(Organization organization) {
+	public Result addOrganization(Organization organization,String parentId) {		
 		organization.setCreateTime(new Date());		
+		if(parentId!=null){
+			Organization parent = this.getOrganization(parentId);
+			organization.setParent(parent);
+		}
 		organizationDao.save(organization);
 		return Result.successResult(organization, null);
 	}
-
+	
 	@Override
 	public Result updateOrganization(Organization Organization) {
 		Assert.notNull(Organization.getId());
 		Organization old = organizationDao.get(Organization.getId());
-		Result result = Result.errorResult(null);
-		if (null != old) {
-			Organization.setCreateTime(Organization.getCreateTime());
-			Organization.setLastModifyTime(new Date());
-			organizationDao.save(Organization);
-			result.success();
-		} else {
-			result.setMessage("用户不存在");
-		}
+		Assert.notNull(old);
+		Result result = null;
+		
+		Organization.setCreateTime(old.getCreateTime());
+		Organization.setLastModifyTime(new Date());
+		organizationDao.update(Organization);
+		result = Result.successResult();
+		
 		return result;
 	}
 
@@ -136,14 +142,12 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public void deleteAllUsers() {
-		
-		
+		userDao.deleteAll();
 	}
 
 	@Override
 	public void deleteAllOrganizations() {
-		// TODO Auto-generated method stub
-		
+		organizationDao.deleteAll();
 	}
 
 }

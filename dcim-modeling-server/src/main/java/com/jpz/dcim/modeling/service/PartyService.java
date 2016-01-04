@@ -26,16 +26,22 @@ public interface PartyService {
 	List<User> findUserByOrg(String organizationId);
 	
 	
-	Result addUser(User user);
+	Result addUser(User user,String orgId);
 
 	Result updateUser(User user);
 	
 	User getUser(String userId);
 	
 	Result deleteUser(String userId);
-
-	Result addOrganization(Organization organization);
-
+	
+	/**
+	 * 将一个机构增加到父机构下，如果parentId为空，则当前机构为顶级机构
+	 * @param organization
+	 * @param parentId
+	 * @return
+	 */
+	Result addOrganization(Organization organization,String parentId);
+	
 	Result updateOrganization(Organization Organization);
 
 	Organization getOrganization(String organizationId);
