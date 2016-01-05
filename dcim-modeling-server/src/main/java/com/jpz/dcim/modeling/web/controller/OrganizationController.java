@@ -50,19 +50,19 @@ public class OrganizationController extends BaseController {
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Object save(@RequestBody Organization organization) {
 		userService.addOrganization(organization, organization.getParent().getId());
-		return Result.successResult();
+		return Result.successResult(organization.getId(), "新增成功");
 	}
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.PUT)
 	public Object update(@PathVariable String organizationId, Organization organization) {
 		organization.setId(organizationId);
 		userService.updateOrganization(organization);
-		return Result.successResult();
+		return Result.successResult("更新成功");
 	}
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.DELETE)
 	public Object delete(@PathVariable String organizationId) {
 		userService.deleteOrganization(organizationId);
-		return Result.successResult();
+		return Result.successResult("删除成功");
 	}
 }

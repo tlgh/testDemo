@@ -54,19 +54,19 @@ public class UserController extends BaseController {
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Object save(@RequestBody User user) {
 		userService.addUser(user, user.getOrganization().getId());
-		return Result.successResult();
+		return Result.successResult("新增成功");
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.PUT)
 	public Object update(@PathVariable String userId, User user) {
 		user.setId(userId);
 		userService.updateUser(user);
-		return Result.successResult();
+		return Result.successResult("更新成功");
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.DELETE)
 	public Object delete(@PathVariable String userId) {
 		userService.deleteUser(userId);
-		return Result.successResult();
+		return Result.successResult("删除成功");
 	}
 }

@@ -50,7 +50,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public List<Organization> organizationTree() {
 		List<Organization> list = new ArrayList<>();
-		list.add(organizationDao.get("0"));
+		list.add(organizationDao.get("orgRoot"));
 		for (Organization organization : list) {
 			traverseOrganizationTree(organization);
 		}
