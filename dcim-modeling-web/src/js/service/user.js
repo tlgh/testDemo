@@ -102,6 +102,13 @@ define([
 				resultHandler: success
 			});
 		},
+		getOrganization: function(organizationId, success) {
+			$.ajax({
+				type: "GET",
+				url: basePath + organizationPath + "/" + organizationId,
+				resultHandler: success
+			});
+		},
 		addOrganization: function(organization, success) {
 			$.ajax({
 				type: "POST",
@@ -121,6 +128,13 @@ define([
 				contentType: 'application/json;charset=utf-8',
 				resultHandler: success
 			});
+		},
+		saveOrUpdateOrganization: function(organization, success) {
+			if (organization.id) {
+				this.updateOrganization(organization,success);
+			}else{
+				this.addOrganization(organization,success);
+			}
 		},
 		deleteOrganization: function(organizationId, success) {
 			$.ajax({

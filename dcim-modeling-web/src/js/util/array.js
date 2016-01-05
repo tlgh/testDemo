@@ -1,41 +1,41 @@
 /**
  * Created by boil on 2015-12-14.
  */
-define(['main'], function (App) {
-    App.Utils.ArrayUtil = function () {
+define(['main'], function(App) {
+	App.Utils.ArrayUtil = function() {
 
-    };
+	};
 
-    
-    App.Utils.ArrayUtil.prototype = {
-    	/**
-	     * @param conditions
-	     *    like this [{key:id,value:1}]
-	     * @type {{findBy: Function}}
-	     */
-        findBy: function (array, conditions) {
-            var list = [];
-            var length = array.length;
-            for (var i = 0; i < length; i++) {
-                var data = array[i];
-                if (checkConditions(data, conditions)) {
-                    list.push(data);
-                }
-            }
-            return list;
-        },
-        /**
-         * 
-         * @param {Array} array 
-         * @param {Object} params 
-         * default 
-         * { 
-         * 	parentKey: null,
-         * 	childrenKey: 'children' 
-         * }
-         * @param {Object} parent
-         */
-        toTree: function(array, params, parent) {
+
+	App.Utils.ArrayUtil.prototype = {
+		/**
+		 * @param conditions
+		 *    like this [{key:id,value:1}]
+		 * @type {{findBy: Function}}
+		 */
+		findBy: function(array, conditions) {
+			var list = [];
+			var length = array.length;
+			for (var i = 0; i < length; i++) {
+				var data = array[i];
+				if (checkConditions(data, conditions)) {
+					list.push(data);
+				}
+			}
+			return list;
+		},
+		/**
+		 * 
+		 * @param {Array} array 
+		 * @param {Object} params 
+		 * default 
+		 * { 
+		 * 	parentKey: null,
+		 * 	childrenKey: 'children' 
+		 * }
+		 * @param {Object} parent
+		 */
+		toTree: function(array, params, parent) {
 			params = $.extend({
 				parentKey: null,
 				childrenKey: 'children'
@@ -50,16 +50,16 @@ define(['main'], function (App) {
 			return list;
 		},
 		/**
-         * 
-         * @param {Array} array 
-         * @param {Object} params 
-         * default 
-         * { 
-         * 	childrenKey: 'children' 
-         * }
-         * @param {Function} handle function(child, level){}
-         * 
-         */
+		 * 
+		 * @param {Array} array 
+		 * @param {Object} params 
+		 * default 
+		 * { 
+		 * 	childrenKey: 'children' 
+		 * }
+		 * @param {Function} handle function(child, level){}
+		 * 
+		 */
 		traverseTree: function(tree, handle, level, params) {
 			level = level ? level : 0;
 			params = $.extend({
@@ -73,29 +73,30 @@ define(['main'], function (App) {
 				this.traverseTree(tree[i][params.childrenKey], handle, (level + 1), params);
 			}
 		}
-    };
-    function checkConditions(data, conditions) {
-        for (var i = 0; i < conditions.length; i++) {
-            var condition = conditions[i];
-            var value = getValueFromCondition(data, condition.key);
-            if (condition.value != value) {
-                return false;
-            }
-        }
-        return true;
-    }
+	};
 
-    function getValueFromCondition(data, key) {
-        var keys = key.split('.');
-        var result = data;
-        for (var i = 0; i < keys.length; i++) {
-        	if (result) {
+	function checkConditions(data, conditions) {
+		for (var i = 0; i < conditions.length; i++) {
+			var condition = conditions[i];
+			var value = getValueFromCondition(data, condition.key);
+			if (condition.value != value) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function getValueFromCondition(data, key) {
+		var keys = key.split('.');
+		var result = data;
+		for (var i = 0; i < keys.length; i++) {
+			if (result) {
 				result = result[keys[i]];
 			}
-        }
-        return result;
-    }
+		}
+		return result;
+	}
 
-    App.Utils.ArrayUtil.prototype.constructor = App.Utils.ArrayUtil;
-    return new App.Utils.ArrayUtil();
+	App.Utils.ArrayUtil.prototype.constructor = App.Utils.ArrayUtil;
+	return new App.Utils.ArrayUtil();
 });
