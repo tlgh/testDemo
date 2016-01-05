@@ -8,6 +8,16 @@ requirejs.config({
 	//config is relative to the baseUrl, and
 	//never includes a ".js" extension since
 	//the paths config could be for a directory.
+	shim: {
+		'sweetAlert': {
+			//These script dependencies should be loaded before loading
+			deps: ['css!vendor/sweet-alert/sweet-alert.css']
+		},
+		'ZY': {
+			//These script dependencies should be loaded before loading
+			deps: ['css!vendor/zy-ui/widgets.css']
+		}
+	},
 	paths: {
 		jquery: 'vendor/jquery.min',
 		main: 'main',
@@ -19,7 +29,7 @@ requirejs.config({
 	},
 	map: {
 		'*': {
-			'css': 'require-css/css' // or whatever the path to require-css is
+			'css': 'vendor/css.min' // or whatever the path to require-css is
 		}
 	}
 });

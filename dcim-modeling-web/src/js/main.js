@@ -31,28 +31,29 @@ define([
 			msgAlertProvider: 'sweet-alert',
 			resultHandler: null,
 			/***end Custom Properties***/
+			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown) {
 				switch (jqXHR.status) {
 					case (500):
-						alert("服务器系统内部错误");
+						alertMsg("服务器系统内部错误", false, this.msgAlertProvider);
 						break;
 					case (401):
-						alert("未登录");
+						alertMsg("未登录", false, this.msgAlertProvider);
 						break;
 					case (403):
-						alert("无权限执行此操作");
+						alertMsg("无权限执行此操作", false, this.msgAlertProvider);
 						break;
 					case (408):
-						alert("请求超时");
+						alertMsg("请求超时", false, this.msgAlertProvider);
 						break;
 					default:
-						alert("未知错误:status-" + jqXHR.status);
+						alertMsg("未知错误:status-" + jqXHR.status, false, this.msgAlertProvider);
 				}
 			},
 			success: function(result) {
 				//请求结果错误且需要输出或
 				if ((this.showErrorMsg && !result.header.success) || (this.showSuccessMsg && result.header.success)) {
-					alertMsg(result, this.msgAlertProvider);
+					alertMsg(result.header.message, result.header.success, this.msgAlertProvider);
 				}
 
 				if (this.resultHandler) {
@@ -72,11 +73,10 @@ define([
 		});
 	}
 
-	function alertMsg(result, msgAlertProvider) {
-		var msg = result.header.message;
+	function alertMsg(msg, type, msgAlertProvider) {
 		switch (msgAlertProvider) {
 			case 'sweet-alert':
-				sweetAlertMsg(msg, result)
+				sweetAlertMsg(msg, type);
 				break;
 			default:
 				alert(msg);
@@ -84,10 +84,10 @@ define([
 		}
 	}
 
-	function sweetAlertMsg(msg, result) {
+	function sweetAlertMsg(msg, type) {
 		swal({
 			title: msg,
-			type: result.header.success ? 'success' : 'error'
+			type: type ? 'success' : 'error'
 		});
 	}
 

@@ -26,9 +26,9 @@ define(['service/user', 'util/array', 'ZY'], function(userService, arrayUtil) {
 	$('#organizationForm').submit(function() {
 		var organization = form.getValue();
 		userService.addOrganization(organization, function(result) {
-			alert(result.header.success ? "添加成功"　 : "添加失败");
 			if (result.header.success) {
-				window.closeDlg(result.body);
+				organization.id = result.body;
+				window.closeDlg(organization);
 			}
 		})
 		return false;

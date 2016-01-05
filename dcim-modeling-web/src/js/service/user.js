@@ -2,31 +2,31 @@
  * Created by boil on 2015-12-14.
  */
 define([
-    "main",
-    "util/string",
-    "util/array"
-], function (App, stringUtil, arrayUtil) {
-	
+	"main",
+	"util/string",
+	"util/array"
+], function(App, stringUtil, arrayUtil) {
+
 	var basePath;
 	var organizationPath = '/organization';
 	var userPath = '/user';
-	
-    App.Services.User = function () {
-		basePath = App.Constants.BASE_PATH;
-    };
 
-    App.Services.User.prototype = {
-    	getCurrentUser: function(){
-    		var user = window.sessionStorage.getItem(App.Constants.SESSION_USER_KEY);
-		    if (user) {
-		    	try{
-		        	return JSON.parse(user);
-		    	}catch(e){
-		    		e.print();
-		    	}
-		    }
-    	},
-        login: function(username, password, success) {
+	App.Services.User = function() {
+		basePath = App.Constants.BASE_PATH;
+	};
+
+	App.Services.User.prototype = {
+		getCurrentUser: function() {
+			var user = window.sessionStorage.getItem(App.Constants.SESSION_USER_KEY);
+			if (user) {
+				try {
+					return JSON.parse(user);
+				} catch (e) {
+					e.print();
+				}
+			}
+		},
+		login: function(username, password, success) {
 			password = stringUtil.md5(password);
 			$.ajax({
 				type: "POST",
@@ -35,8 +35,7 @@ define([
 					username: username,
 					password: password
 				},
-                dataType: 'json',
-				resultHandler: function(result){
+				resultHandler: function(result) {
 					if (result.header.success) {
 						var user = result.body;
 						window.sessionStorage.setItem(App.Constants.SESSION_USER_KEY, JSON.stringify(user));
@@ -45,28 +44,47 @@ define([
 				}
 			});
 		},
-		logoff: function(){
+		logoff: function() {
 			window.sessionStorage.removeItem(App.Constants.SESSION_USER_KEY);
 		},
-		userPage: function (organizationId, name, success) {
-            $.ajax({
+		userPage: function(organizationId, name, success) {
+			$.ajax({
 				type: "GET",
 				url: basePath + userPath + "/list",
 				data: {
 					organizationId: organizationId,
 					name: name
 				},
-				dataType: "json",
 				resultHandler: success
 			});
-        },
+		},
 		addUser: function(user, success) {
 			$.ajax({
 				type: "POST",
+				showSuccessMsg: false,
 				url: basePath + userPath + "/",
 				data: JSON.stringify(user),
-                dataType: 'json',
-                contentType: 'application/json;charset=utf-8',
+				contentType: 'application/json;charset=utf-8',
+				resultHandler: success
+			});
+		},
+		updateUser: function(user, success) {
+			$.ajax({
+				type: "PUT",
+				showSuccessMsg: false,
+				url: basePath + userPath + "/" + user.id,
+				data: JSON.stringify(user),
+				contentType: 'application/json;charset=utf-8',
+				resultHandler: success
+			});
+		},
+		deleteUser: function(userId, success) {
+			$.ajax({
+				type: "DELETE",
+				showSuccessMsg: true,
+				url: basePath + userPath + "/" + userId,
+				data: JSON.stringify(user),
+				contentType: 'application/json;charset=utf-8',
 				resultHandler: success
 			});
 		},
@@ -74,7 +92,6 @@ define([
 			$.ajax({
 				type: "GET",
 				url: basePath + organizationPath + "/tree",
-				dataType: "json",
 				resultHandler: success
 			});
 		},
@@ -82,7 +99,6 @@ define([
 			$.ajax({
 				type: "GET",
 				url: basePath + organizationPath + "/list",
-				dataType: "json",
 				resultHandler: success
 			});
 		},
@@ -91,8 +107,26 @@ define([
 				type: "POST",
 				url: basePath + organizationPath + "/",
 				data: JSON.stringify(organization),
-                dataType: 'json',
-                contentType: 'application/json;charset=utf-8',
+				showSuccessMsg: false,
+				contentType: 'application/json;charset=utf-8',
+				resultHandler: success
+			});
+		},
+		updateOrganization: function(organization, success) {
+			$.ajax({
+				type: "PUT",
+				url: basePath + organizationPath + "/" + organization.id,
+				data: JSON.stringify(organization),
+				showSuccessMsg: true,
+				contentType: 'application/json;charset=utf-8',
+				resultHandler: success
+			});
+		},
+		deleteOrganization: function(organizationId, success) {
+			$.ajax({
+				type: "DELETE",
+				showSuccessMsg: true,
+				url: basePath + organizationPath + "/" + organizationId,
 				resultHandler: success
 			});
 		},
@@ -100,11 +134,10 @@ define([
 			$.ajax({
 				type: "GET",
 				url: basePath + organizationPath + "/" + organizationId + '/users',
-				dataType: "json",
 				resultHandler: success
 			});
 		}
-    };
-    App.Services.User.prototype.constructor = App.Services.User;
-    return new App.Services.User();
+	};
+	App.Services.User.prototype.constructor = App.Services.User;
+	return new App.Services.User();
 });
