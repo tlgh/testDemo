@@ -1,12 +1,24 @@
 /**
  * Created by boil on 2015-12-14.
  */
-define(['service/user', 'util/array', 'ZY'], function(userService, arrayUtil) {
+define(['service/user', 'util/array', 'util/url', 'ZY'], function(userService, arrayUtil, urlUtil) {
 	var selectParent = $('#selectParent');
 	var form = new ZY.UI.Form("organizationForm");
 
+
 	//init datas
-	form.setValue({});
+	var organization = {};
+	var organizationId = urlUtil.getUrlParameter('organizationId');
+	if (organizationId) {
+		userService.getOrganization(organizationId, function(result) {
+			if (result.header.success) {
+				organization = result.body;
+				form.setValue(organization);
+			}
+		});
+	} else {
+		form.setValue(organization);
+	}
 	userService.organizationTree(function(result) {
 		selectParent.empty();
 
@@ -25,9 +37,11 @@ define(['service/user', 'util/array', 'ZY'], function(userService, arrayUtil) {
 	//register events
 	$('#organizationForm').submit(function() {
 		var organization = form.getValue();
-		userService.addOrganization(organization, function(result) {
+		userService.saveOrUpdateOrganization(organization, function(result) {
 			if (result.header.success) {
-				organization.id = result.body;
+				if(!organizationId){
+					organization.id = result.body;
+				}
 				window.closeDlg(organization);
 			}
 		})

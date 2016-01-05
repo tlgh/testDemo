@@ -1,6 +1,5 @@
 package com.jpz.dcim.modeling.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import com.jpz.dcim.modeling.service.PartyService;
 
 import pers.ksy.common.MD5Util;
 import pers.ksy.common.model.Page;
+import pers.ksy.common.orm.IsCondition;
 import pers.ksy.common.orm.QueryCondition;
 import pers.ksy.common.orm.jpa.JpaHelper;
 
@@ -49,9 +49,10 @@ public class PartyServiceImpl extends BaseServiceImpl<User, String> implements P
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Organization> organizationTree() {
-		List<Organization> list = new ArrayList<>();
-		list.add(organizationDao.get("orgRoot"));
+		QueryCondition qc = organizationDao.getQC().is("parent.id", IsCondition.Type.NULL);
+		List<Organization> list = organizationDao.listByQC(qc);
 		for (Organization organization : list) {
 			traverseOrganizationTree(organization);
 		}
@@ -133,7 +134,11 @@ public class PartyServiceImpl extends BaseServiceImpl<User, String> implements P
 
 	@Override
 	public Organization getOrganization(String organizationId) {
-		return organizationDao.get(organizationId);
+		Organization organization = organizationDao.getByProperty("id", organizationId, new String[] { "principal" });
+		if (null == organization) {
+			throw new ServiceException("组织机构不存在");
+		}
+		return organization;
 	}
 
 	@Override

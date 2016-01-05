@@ -96,6 +96,10 @@ define([
 	 */
 	function loadController() {
 		var html = window.location.href.toString();
+		var paramsIndex = html.indexOf('?');
+		if (paramsIndex > 0) {
+			html = html.substr(0, paramsIndex);
+		}
 		var ctrl = html.replace('.html', '.js');
 		require([ctrl]);
 	}

@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "role")
 public class Role implements Serializable {
@@ -27,7 +29,8 @@ public class Role implements Serializable {
 	private List<Permission> permissions;
 
 	@Id
-	@GeneratedValue(generator = "uuid-hex")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
 	public String getId() {
 		return id;
 	}

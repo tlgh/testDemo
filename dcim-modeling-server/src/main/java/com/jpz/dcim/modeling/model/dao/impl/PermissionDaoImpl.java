@@ -14,4 +14,5 @@ public class PermissionDaoImpl extends BaseDaoImpl<Permission, String>
 		return Permission.class;
 	}
 
+
 }

@@ -1,6 +1,6 @@
 package pers.ksy.common.orm;
 
-public interface QueryCondition {
+public interface QueryCondition extends ConditionCriterion {
 	public String getAlias();
 
 	public QueryCondition add(Condition condition);

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
@@ -328,6 +329,32 @@ public abstract class AbstractJpaBaseDAO<T, ID extends Serializable> extends
 			}
 		}
 		return findByPage(criteriaQuery, pageIndex, pageSize);
+	}
+	
+
+	@Override
+	public Page<T> findByPage(int pageIndex, int pageSize, Map<String, Object> eqConditions,
+			Map<String, String> likeConditions, Order[] orders, boolean isCacheable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<T> findByPage(QueryCondition qc, int pageIndex, int pageSize, boolean isCacheable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Class<T> getEntityClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

@@ -59,5 +59,10 @@ public final class Conditions {
 	public static Condition and(Condition... conditions) {
 		return new ConjunctionCondition(Nature.AND, conditions);
 	}
+	
+	public static Condition is(String propertyName, IsCondition.Type type) {
+		return new IsCondition(propertyName, type);
+	}
+	
 
 }

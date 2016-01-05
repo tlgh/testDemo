@@ -37,10 +37,22 @@
 		    <artifactId>spring-test</artifactId>
 		    <version>${spring.version}</version>
 		</dependency>
-		<dependency>
+		<!-- openJPA -->
+		<!-- <dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>openjpa</artifactId>
 			<version>${apache.openjpa.version}</version>
+		</dependency> -->
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -72,7 +84,7 @@
 		<dependency>
 			<groupId>pers.ksy</groupId>
 			<artifactId>common-util</artifactId>
-			<version>1.4.0-REALEASE</version>
+			<version>1.4.1-REALEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

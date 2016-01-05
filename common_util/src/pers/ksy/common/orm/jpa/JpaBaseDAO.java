@@ -96,6 +96,20 @@ public interface JpaBaseDAO<T, ID extends Serializable> {
 	public Page<T> findByPage(int pageIndex, int pageSize,
 			Map<String, Object> eqConditions,
 			Map<String, String> likeConditions, Order[] orders);
+	
+	/**
+	 * 分页查询
+	 * 
+	 * @param pageIndex 当前页(0~n)
+	 * @param pageSize 页面大小(每页最大记录数)
+	 * @param isCacheable 是否启用缓存
+	 * @param eqConditions equals查询条件(key:hibernate entity 属性名,value 属性值)
+	 * @param likeConditions like查询条件(key:hibernate entity 属性名,value 属性值)
+	 * @param orders  排序字段
+	 * @return 页面查询结果封装对象
+	 */
+	public Page<T> findByPage(int pageIndex, int pageSize, Map<String, Object> eqConditions,
+			Map<String, String> likeConditions, Order[] orders, boolean isCacheable);
 
 	/**
 	 * 分页查询（重载）
@@ -106,6 +120,8 @@ public interface JpaBaseDAO<T, ID extends Serializable> {
 	 * @return
 	 */
 	public Page<T> findByPage(QueryCondition qc, int pageIndex, int pageSize);
+	
+	public Page<T> findByPage(QueryCondition qc, int pageIndex, int pageSize, boolean isCacheable);
 	
 	/**
 	 * 获取当前DAO对应entity的DetachedCriteria

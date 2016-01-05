@@ -101,6 +101,26 @@ define(['service/user', 'ZY'], function(userService) {
 		});
 	});
 
+	$('#btnEditOrganization').click(function() {
+		var node = tree.getSelectedNode();
+		if (!node) {
+			swal("警告!", "请选中需要删除的组织机构.", "warning");
+			return;
+		}
+		var org = node.data;
+		window.openDlg({
+			url: "organization-dialog.html?organizationId=" + org.id, //在应用中需要修改为特定页面的url
+			width: 600,
+			height: 380,
+			title: "新增部门",
+			callback: function(organization) {
+				if (organization) {
+					node.update(organization);
+				}
+			}
+		});
+	});
+
 	$('#btnDeleteOrganization').click(function() {
 		var node = tree.getSelectedNode();
 		if (!node) {
@@ -108,7 +128,7 @@ define(['service/user', 'ZY'], function(userService) {
 			return;
 		}
 		var org = node.data;
-		if (org.id == 0) {
+		if (!org.parent || !org.parent.id) {
 			swal("警告!", "不能删除顶级组织机构.", "warning");
 			return;
 		}
