@@ -1,5 +1,6 @@
 package com.jpz.dcim.modeling.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,17 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import pers.ksy.common.MD5Util;
-import pers.ksy.common.model.Page;
-import pers.ksy.common.model.Result;
-import pers.ksy.common.orm.QueryCondition;
-
+import com.jpz.dcim.modeling.exception.ServiceException;
 import com.jpz.dcim.modeling.model.dao.OrganizationDao;
 import com.jpz.dcim.modeling.model.dao.UserDao;
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
 import com.jpz.dcim.modeling.service.PartyService;
 
+import pers.ksy.common.MD5Util;
+import pers.ksy.common.model.Page;
+import pers.ksy.common.orm.QueryCondition;
+import pers.ksy.common.orm.jpa.JpaHelper;
 
 @Transactional
 @Service
@@ -29,24 +30,41 @@ public class PartyServiceImpl implements PartyService {
 	private OrganizationDao organizationDao;
 
 	@Override
-	public Result<User> login(String username, String password) {
-		Result<User> result = Result.errorResult(null);
+	public User login(String username, String password) throws ServiceException {
 		User user = userDao.getByProperty("username", username);
-		if (null != user) {
-			if (password.equals(user.getPassword())) {
-				result.success(user, null);
-			} else {
-				result.setMessage("密码错误");
-			}
-		} else {
-			result.setMessage("用户不存在");
+		if (null == user) {
+			throw new ServiceException("用户不存在");
+		} else if (!password.equals(user.getPassword())) {
+			throw new ServiceException("密码错误");
 		}
-		return result;
+		JpaHelper.initialize(user.getOrganization());
+		return user;
 	}
-	
+
 	@Override
 	public List<Organization> organizationList() {
-		return organizationDao.findAll();
+		List<Organization> list = organizationDao.findAll();
+		return list;
+	}
+
+	@Override
+	public List<Organization> organizationTree() {
+		List<Organization> list = new ArrayList<>();
+		list.add(organizationDao.get("orgRoot"));
+		for (Organization organization : list) {
+			traverseOrganizationTree(organization);
+		}
+		return list;
+	}
+
+	private void traverseOrganizationTree(Organization organization) {
+		if (null == organization) {
+			return;
+		}
+		JpaHelper.initialize(organization.getPrincipal());
+		for (Organization child : organization.getChildren()) {
+			traverseOrganizationTree(child);
+		}
 	}
 
 	@Override
@@ -55,35 +73,29 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public Result addUser(User user,String orgId) {
+	public void addUser(User user, String orgId) {
 		user.setPassword(MD5Util.MD5("123456"));
 		user.setCreateTime(new Date());
-		
-		if(orgId!=null && orgId.isEmpty()==false){
+		if (orgId != null && orgId.isEmpty() == false) {
 			Organization org = this.getOrganization(orgId);
 			user.setOrganization(org);
 		}
 		userDao.save(user);
-		return Result.successResult();
 	}
 
 	@Override
-	public Result updateUser(User user) {
+	public void updateUser(User user) throws ServiceException {
 		Assert.notNull(user.getId());
 		User old = userDao.get(user.getId());
-		Result result = Result.errorResult(null);
-		if (null != old) {
-			user.setUsername(old.getUsername());
-			user.setPassword(old.getPassword());
-			user.setCreateTime(old.getCreateTime());
-			user.setLastLoginTime(old.getLastLoginTime());
-			user.setLastModifyTime(new Date());
-			userDao.save(user);
-			result.success();
-		} else {
-			result.setMessage("用户不存在");
+		if (null == old) {
+			throw new ServiceException("用户不存在");
 		}
-		return result;
+		user.setUsername(old.getUsername());
+		user.setPassword(old.getPassword());
+		user.setCreateTime(old.getCreateTime());
+		user.setLastLoginTime(old.getLastLoginTime());
+		user.setLastModifyTime(new Date());
+		userDao.save(user);
 	}
 
 	@Override
@@ -92,35 +104,30 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public Result deleteUser(String userId) {
+	public void deleteUser(String userId) {
 		userDao.deleteById(userId);
-		return Result.successResult();
 	}
 
 	@Override
-	public Result addOrganization(Organization organization,String parentId) {		
-		organization.setCreateTime(new Date());		
-		if(parentId!=null){
+	public void addOrganization(Organization organization, String parentId) {
+		organization.setCreateTime(new Date());
+		if (parentId != null) {
 			Organization parent = this.getOrganization(parentId);
 			organization.setParent(parent);
 		}
 		organizationDao.save(organization);
-		return Result.successResult(organization, null);
 	}
-	
+
 	@Override
-	public Result updateOrganization(Organization Organization) {
+	public void updateOrganization(Organization Organization) throws ServiceException {
 		Assert.notNull(Organization.getId());
 		Organization old = organizationDao.get(Organization.getId());
-		Assert.notNull(old);
-		Result result = null;
-		
+		if (null == old) {
+			throw new ServiceException("部门不存在");
+		}
 		Organization.setCreateTime(old.getCreateTime());
 		Organization.setLastModifyTime(new Date());
 		organizationDao.update(Organization);
-		result = Result.successResult();
-		
-		return result;
 	}
 
 	@Override
@@ -129,14 +136,12 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public Result deleteOrganization(String organizationId) {
+	public void deleteOrganization(String organizationId) {
 		organizationDao.deleteById(organizationId);
-		return Result.successResult();
 	}
 
 	@Override
-	public Page<User> findPage(int pageIndex, int pageSize,
-			QueryCondition queryCondition) {
+	public Page<User> findPage(int pageIndex, int pageSize, QueryCondition queryCondition) {
 		return userDao.findByPage(queryCondition, pageIndex, pageSize);
 	}
 

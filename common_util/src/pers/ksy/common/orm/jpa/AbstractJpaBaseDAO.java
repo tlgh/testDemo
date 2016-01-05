@@ -346,6 +346,12 @@ public abstract class AbstractJpaBaseDAO<T, ID extends Serializable> extends
 		List<T> list =query.getResultList();
 		return list;
 	}
+	
+
+	@Override
+	public List<T> findAll(String[] joins) {
+		return findByProperty(new String[] {}, new Object[] {}, joins);
+	}
 
 	@Override
 	public List<T> findByProperty(String propName, Object propVal) {
@@ -361,20 +367,20 @@ public abstract class AbstractJpaBaseDAO<T, ID extends Serializable> extends
 	}
 
 	@Override
-	public List<T> findByProperty(String[] propNames, Object[] propVals,
-			String[] joins) {
-		CriteriaBuilder criteriaBuilder = getEntityManager()
-				.getCriteriaBuilder();
-		CriteriaQuery<T> criteriaQuery = criteriaBuilder
-				.createQuery(getEntityClass());
+	public List<T> findByProperty(String[] propNames, Object[] propVals, String[] joins) {
+		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(getEntityClass());
 		Root<T> root = criteriaQuery.from(getEntityClass());
-		for (int i = 0; i < propNames.length; i++) {
-			criteriaQuery.where(criteriaBuilder.equal(getPath(root, propNames[i]),
-					propVals[i]));
+		if (null != propNames) {
+			for (int i = 0; i < propNames.length; i++) {
+				criteriaQuery.where(criteriaBuilder.equal(getPath(root, propNames[i]), propVals[i]));
+			}
 		}
 		if (null != joins) {
-			for (int i = 0; i < joins.length; i++) {
-				root.fetch(joins[i], JoinType.LEFT);
+			if (null != joins) {
+				for (int i = 0; i < joins.length; i++) {
+					root.fetch(joins[i], JoinType.LEFT);
+				}
 			}
 		}
 		return listByCQ(criteriaQuery);

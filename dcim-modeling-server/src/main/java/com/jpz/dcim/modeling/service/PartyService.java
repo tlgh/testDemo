@@ -2,12 +2,12 @@ package com.jpz.dcim.modeling.service;
 
 import java.util.List;
 
-import pers.ksy.common.model.Page;
-import pers.ksy.common.model.Result;
-import pers.ksy.common.orm.QueryCondition;
-
+import com.jpz.dcim.modeling.exception.ServiceException;
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
+
+import pers.ksy.common.model.Page;
+import pers.ksy.common.orm.QueryCondition;
 
 @SuppressWarnings("rawtypes")
 public interface PartyService extends BaseService {
@@ -16,6 +16,7 @@ public interface PartyService extends BaseService {
 	 * 
 	 * @return
 	 */
+	@Deprecated
 	List<Organization> organizationList();
 
 	/**
@@ -26,13 +27,13 @@ public interface PartyService extends BaseService {
 	List<User> findUserByOrg(String organizationId);
 	
 	
-	Result addUser(User user,String orgId);
+	void addUser(User user,String orgId);
 
-	Result updateUser(User user);
+	void updateUser(User user) throws ServiceException;
 	
 	User getUser(String userId);
 	
-	Result deleteUser(String userId);
+	void deleteUser(String userId);
 	
 	/**
 	 * 将一个机构增加到父机构下，如果parentId为空，则当前机构为顶级机构
@@ -40,23 +41,30 @@ public interface PartyService extends BaseService {
 	 * @param parentId
 	 * @return
 	 */
-	Result addOrganization(Organization organization,String parentId);
+	void addOrganization(Organization organization,String parentId);
 	
-	Result updateOrganization(Organization Organization);
+	void updateOrganization(Organization Organization) throws ServiceException;
 
 	Organization getOrganization(String organizationId);
 	
-	Result deleteOrganization(String organizationId);
+	void deleteOrganization(String organizationId);
 
 	Page<User> findPage(int pageIndex, int pageSize,
 			QueryCondition queryCondition);
 
-	Result login(String username, String password);
+	User login(String username, String password) throws ServiceException;
 	
 	void deleteAllUsers();
 	
 	void deleteAllOrganizations();
 
+	/**
+	 * 组织机构树
+	 * 
+	 * @return
+	 */
+	List<Organization> organizationTree();
+	
 	void method4Test();
 	
 }

@@ -120,6 +120,12 @@ public interface JpaBaseDAO<T, ID extends Serializable> {
 	public List<T> findAll();
 	
 	/**
+	 * 查询所有记录
+	 * @return
+	 */
+	public List<T> findAll(String[] joins);
+	
+	/**
 	 * 单属性查询列表
 	 * @param propName 属性名
 	 * @param propVal 属性值

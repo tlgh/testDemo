@@ -3,6 +3,7 @@
     "apache-server-configs": "2.14.0",
     "archiver": "^0.14.3",
     "bootstrap": "3.3.6",
+    "bootstrap-sweetalert": "^0.4.2",
     "del": "^1.1.1",
     "glob": "^5.0.5",
     "gulp": "^3.8.11",
@@ -21,6 +22,7 @@
     "md5": "^2.0.0",
     "mocha": "^2.2.4",
     "normalize.css": "3.0.3",
+    "require-css": "^0.1.8",
     "requirejs": "^2.1.22",
     "run-sequence": "^1.0.2"
   },

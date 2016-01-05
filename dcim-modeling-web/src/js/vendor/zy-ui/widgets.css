@@ -183,7 +183,7 @@
 	background-position:center center;
 }
 
-.zy_tree .node .focus{
+.zy_tree .node.focus{
 	font-size:12px;	height:24px;white-space:nowrap;	background:#3a91d5;
 	color:#fff;	float:left;	cursor:pointer;	line-height:24px;
 }
