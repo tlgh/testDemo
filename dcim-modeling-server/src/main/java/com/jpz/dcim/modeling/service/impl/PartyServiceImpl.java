@@ -52,8 +52,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Organization> organizationTree() {
-		QueryCondition qc = organizationDao.getQC();
-		qc.add(Conditions.is("parent.id", IsCondition.Type.NULL));
+		QueryCondition qc = organizationDao.getQC().is("parent.id", IsCondition.Type.NULL);
 		List<Organization> list = organizationDao.listByQC(qc);
 		for (Organization organization : list) {
 			traverseOrganizationTree(organization);

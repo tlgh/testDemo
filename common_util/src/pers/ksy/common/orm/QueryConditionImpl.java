@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import pers.ksy.common.orm.IsCondition.Type;
+
 public class QueryConditionImpl implements QueryCondition {
 	private String alias;
 	private Class<?> entityClass;
@@ -43,8 +45,7 @@ public class QueryConditionImpl implements QueryCondition {
 	}
 
 	@Override
-	public QueryCondition createAlias(String associationPath, String alias,
-			JoinType joinType) {
+	public QueryCondition createAlias(String associationPath, String alias, JoinType joinType) {
 		aliases.add(new Alias(associationPath, alias, JoinType.LEFT_OUTER_JOIN));
 		return this;
 	}
@@ -112,8 +113,7 @@ public class QueryConditionImpl implements QueryCondition {
 	}
 
 	private String buildQueryString() {
-		String qlString = "select " + getAlias() + " from "
-				+ entityClass.getSimpleName() + ' ' + getAlias() + ' ';
+		String qlString = "select " + getAlias() + " from " + entityClass.getSimpleName() + ' ' + getAlias() + ' ';
 		for (Alias alias : aliases) {
 			qlString += alias.toQueryString(this);
 		}
@@ -203,6 +203,81 @@ public class QueryConditionImpl implements QueryCondition {
 		public String toString() {
 			return order.toString();
 		}
+	}
+
+	@Override
+	public QueryCondition eq(String propertyName, Object value) {
+		return add(Conditions.eq(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition like(String propertyName, Object value, MatchMode matchMode) {
+		return add(Conditions.like(propertyName, value, matchMode));
+	}
+
+	@Override
+	public QueryCondition ne(String propertyName, Object value) {
+		return add(Conditions.ne(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition gt(String propertyName, Object value) {
+		return add(Conditions.gt(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition lt(String propertyName, Object value) {
+		return add(Conditions.lt(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition ge(String propertyName, Object value) {
+		return add(Conditions.ge(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition le(String propertyName, Object value) {
+		return add(Conditions.le(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition between(String propertyName, Object lv, Object hv) {
+		return add(Conditions.between(propertyName, lv, hv));
+	}
+
+	@Override
+	public QueryCondition in(String propertyName, Object... value) {
+		return add(Conditions.in(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition notIn(String propertyName, Object... value) {
+		return add(Conditions.notIn(propertyName, value));
+	}
+
+	@Override
+	public QueryCondition or(Condition leftCondition, Condition rightCondition) {
+		return add(Conditions.or(leftCondition, rightCondition));
+	}
+
+	@Override
+	public QueryCondition or(Condition... conditions) {
+		return add(Conditions.or(conditions));
+	}
+
+	@Override
+	public QueryCondition and(Condition leftCondition, Condition rightCondition) {
+		return add(Conditions.and(leftCondition, rightCondition));
+	}
+
+	@Override
+	public QueryCondition and(Condition... conditions) {
+		return add(Conditions.and(conditions));
+	}
+
+	@Override
+	public QueryCondition is(String propertyName, Type type) {
+		return add(Conditions.is(propertyName, type));
 	}
 
 }
