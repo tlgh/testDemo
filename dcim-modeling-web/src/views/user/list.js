@@ -128,7 +128,7 @@ define(['service/user', 'ZY'], function(userService) {
 			return;
 		}
 		var org = node.data;
-		if (org.id == 0) {
+		if (!org.parent || !org.parent.id) {
 			swal("警告!", "不能删除顶级组织机构.", "warning");
 			return;
 		}
