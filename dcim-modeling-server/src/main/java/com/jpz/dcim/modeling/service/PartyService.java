@@ -10,7 +10,7 @@ import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
 
 @SuppressWarnings("rawtypes")
-public interface PartyService {
+public interface PartyService extends BaseService {
 	/**
 	 * 组织机构列表
 	 * 

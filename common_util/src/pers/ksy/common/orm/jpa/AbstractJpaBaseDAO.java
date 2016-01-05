@@ -343,7 +343,7 @@ public abstract class AbstractJpaBaseDAO<T, ID extends Serializable> extends
 	@Override
 	public List<T> findAll() {
 		Query query = createQuery(buildQueryString("t"));
-		List<T> list = getList(query);
+		List<T> list =query.getResultList();
 		return list;
 	}
 
