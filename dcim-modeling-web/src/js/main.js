@@ -23,6 +23,7 @@ define([
 	 * 设置jQuery Ajax全局的参数
 	 */
 	function ajaxGlobalSetting() {
+		var loadingText = 'loading...';
 		$.ajaxSetup({
 			/***Start Custom Properties***/
 			showLoading: false,
@@ -62,12 +63,17 @@ define([
 			},
 			beforeSend: function() {
 				if (this.showLoading) {
-
+					swal({
+						title: loadingText,
+						imageUrl: '../../img/loading2.gif',
+						imageSize: '288x288',
+						showConfirmButton: false
+					});
 				}
 			},
 			complete: function() {
-				if (this.showLoading) {
-
+				if (this.showLoading && loadingText == $('.sweet-alert h2:eq(0)').text()) {
+					swal.close();
 				}
 			}
 		});

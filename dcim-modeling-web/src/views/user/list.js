@@ -128,7 +128,7 @@ define(['service/user', 'ZY'], function(userService) {
 			return;
 		}
 		var org = node.data;
-		if (!org.parent || !org.parent.id) {
+		if (org.id == 'orgRoot') {
 			swal("警告!", "不能删除顶级组织机构.", "warning");
 			return;
 		}
@@ -145,7 +145,7 @@ define(['service/user', 'ZY'], function(userService) {
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "删除!",
 			closeOnConfirm: false,
-			html: false
+			showLoaderOnConfirm: true
 		}, function() {
 			userService.deleteOrganization(org.id, function(result) {
 				if (result.header.success) {

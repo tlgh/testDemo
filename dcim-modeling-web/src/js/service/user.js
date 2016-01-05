@@ -31,6 +31,7 @@ define([
 			$.ajax({
 				type: "POST",
 				url: basePath + userPath + "/login",
+				showLoading: true,
 				data: {
 					username: username,
 					password: password
@@ -88,9 +89,10 @@ define([
 				resultHandler: success
 			});
 		},
-		organizationTree: function(success) {
+		organizationTree: function(success, showLoading) {
 			$.ajax({
 				type: "GET",
+				showLoading: showLoading,
 				url: basePath + organizationPath + "/tree",
 				resultHandler: success
 			});
@@ -131,9 +133,9 @@ define([
 		},
 		saveOrUpdateOrganization: function(organization, success) {
 			if (organization.id) {
-				this.updateOrganization(organization,success);
-			}else{
-				this.addOrganization(organization,success);
+				this.updateOrganization(organization, success);
+			} else {
+				this.addOrganization(organization, success);
 			}
 		},
 		deleteOrganization: function(organizationId, success) {

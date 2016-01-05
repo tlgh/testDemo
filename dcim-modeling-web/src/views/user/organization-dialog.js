@@ -32,14 +32,14 @@ define(['service/user', 'util/array', 'util/url', 'ZY'], function(userService, a
 			option.val(child.id);
 			selectParent.append(option);
 		})
-	});
+	}, true);
 
 	//register events
 	$('#organizationForm').submit(function() {
 		var organization = form.getValue();
 		userService.saveOrUpdateOrganization(organization, function(result) {
 			if (result.header.success) {
-				if(!organizationId){
+				if (!organizationId) {
 					organization.id = result.body;
 				}
 				window.closeDlg(organization);
