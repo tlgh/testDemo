@@ -8,6 +8,8 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.xml.registry.infomodel.User;
 
 import pers.ksy.common.model.Page;
 
@@ -51,7 +53,7 @@ public abstract class JpaSimpleDAO<T> {
 
 	protected List find(String qlString, Object... values) {
 		Query query = createQuery(qlString, values);
-		return getList(query);
+		return query.getResultList();
 	}
 
 	protected List findPage(String qlString, int page, int maxSize,
@@ -59,9 +61,10 @@ public abstract class JpaSimpleDAO<T> {
 		Query query = createQuery(qlString, values);
 		query.setFirstResult((page - 1) * maxSize);
 		query.setMaxResults(maxSize);
-		return getList(query);
+		return query.getResultList();
 	}
 
+	/*
 	protected List getList(Query query) {
 		List list = query.getResultList();
 		Iterator<T> it = list.iterator();
@@ -69,7 +72,7 @@ public abstract class JpaSimpleDAO<T> {
 			it.next();
 		}
 		return list;
-	}
+	}*/
 
 	protected String buildQueryString(String alias) {
 		String qlString = "select " + alias + " from "
@@ -80,7 +83,7 @@ public abstract class JpaSimpleDAO<T> {
 	protected List listByCQ(CriteriaQuery criteriaQuery) {
 		TypedQuery<T> typedQuery = getEntityManager()
 				.createQuery(criteriaQuery);
-		return getList(typedQuery);
+		return typedQuery.getResultList();
 	}
 
 	protected List listByCQ(CriteriaQuery criteriaQuery, int first, int max) {
@@ -89,7 +92,7 @@ public abstract class JpaSimpleDAO<T> {
 				.createQuery(criteriaQuery);
 		typedQuery.setFirstResult(first);
 		typedQuery.setMaxResults(max);
-		return getList(typedQuery);
+		return typedQuery.getResultList();
 	}
 
 	protected Object uniqueByCQ(CriteriaQuery criteriaQuery) {
@@ -99,14 +102,15 @@ public abstract class JpaSimpleDAO<T> {
 	}
 
 	protected Long countByCQ(CriteriaQuery criteriaQuery) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		criteriaQuery.select(builder.count(criteriaQuery.from(getEntityClass())));
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();		
+		criteriaQuery.select(builder.count((Expression<?>) criteriaQuery.getRoots().iterator().next()));
 		return (Long) uniqueByCQ(criteriaQuery);
 	}
 
 	protected Page<T> findByPage(CriteriaQuery criteriaQuery, int pageIndex,
 			int pageSize) {
 		try {
+			int a = this.find("select u from User u where 1=1",null).size();
 			Long count = countByCQ(criteriaQuery);
 			List<T> list = listByCQ(criteriaQuery, pageIndex * pageSize,
 					pageSize);

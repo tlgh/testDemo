@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -17,13 +19,16 @@ import com.jpz.dcim.modeling.BaseTestCase;
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
 
+import pers.ksy.common.model.Page;
+import pers.ksy.common.orm.Order;
+
 
 /**
  * 因为BaseDaoImpl是一个abstract类，所以，我们在userDao中测试baseDao方法
  * @author Administrator
  *
  */
-@Transactional
+
 public class BaseDaoTest extends BaseTestCase{
 	@Resource 
 	UserDao dao ;
@@ -34,24 +39,25 @@ public class BaseDaoTest extends BaseTestCase{
 	User user = null;
 	
 	@Before	
+	@Transactional
 	public void setup() throws Exception{
 		dao.deleteAll();
 		orgDao.deleteAll();
 		
 		user = new User();
 		user.setUsername("userName");
-		user.setName("姓名");
+		user.setName("测试用户_0");
 		user.setCreateTime(new Date());
 		user.setLastModifyTime(new Date());
 		user.setSex((short)0);
 		user.setPassword("123456");
 		dao.save(user);
-		
-		create10Users();
+		create9Users();
+		System.out.println("--------------------------------------------------"+dao.findAll().size());
 	}
 	
-	private void create10Users(){
-		for(int i=0;i<10;i++){
+	private void create9Users(){
+		for(int i=1;i<10;i++){
 			User u = new User();
 			u.setUsername("user_"+i);
 			u.setName("测试用户_"+i);
@@ -139,18 +145,36 @@ public class BaseDaoTest extends BaseTestCase{
 	public void testRefresh() {
 		user.setName("updated");
 		dao.refresh(user);
-		assertEquals("姓名",user.getName());
+		assertEquals("测试用户_0",user.getName());
 	}
 
 	@Test
+	@Transactional
 	public void testFindByPageIntIntOrderArray() {
-		
-		fail("Not yet implemented");
+		Order[] orders = new Order[]{Order.asc("username")};		
+		Page<User> page = dao.findByPage(0, 5, orders);
+		assertEquals(5,page.getPageSize());
+		assertEquals(2,page.getPageAmount());
+		assertEquals(10,page.getTotal());
+		assertEquals(5,page.getList().size());
+		User f = page.getList().get(0);
+		assertEquals("测试用户_0",f.getName());
 	}
 
 	@Test
 	public void testFindByPageIntIntMapOfStringObjectMapOfStringStringOrderArray() {
-		fail("Not yet implemented");
+		Map<String,Object> eqConditions = new HashMap<String,Object>();
+		Map<String,String> likeConditions = new HashMap<String,String>();
+		eqConditions.put("sex",(short)1);
+		likeConditions.put("name", "测试用户");
+		Order[] orders = new Order[]{Order.asc("name")};
+		Page<User> page = dao.findByPage(0, 5, eqConditions, likeConditions, orders);
+		assertEquals(5,page.getPageSize());
+		assertEquals(2,page.getPageAmount());
+		assertEquals(9,page.getTotal());
+		assertEquals(5,page.getList().size());
+		User f = page.getList().get(0);
+		assertEquals("测试用户_1",f.getName());
 	}
 
 	@Test

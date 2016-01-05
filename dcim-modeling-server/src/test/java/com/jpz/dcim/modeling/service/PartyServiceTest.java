@@ -21,12 +21,14 @@ public class PartyServiceTest extends BaseTestCase {
 	PartyService service;
 	
 	private Organization root = null;
+	private Organization child1 = null;
+	
 	@Before
 	public void setup(){
 		service.deleteAllUsers();
 		service.deleteAllOrganizations();
 		
-		//初始化一个根部门,两个字部门
+		//初始化一个根部门,两个子部门
 		root = new Organization();
 		root.setCreateTime(new Date());
 		root.setLastModifyTime(new Date());
@@ -39,19 +41,18 @@ public class PartyServiceTest extends BaseTestCase {
 		user.setName("张三");
 		user.setUsername("zss");
 		user.setPassword("123456");
-		user.setSex((short) 1);
-		
+		user.setSex((short) 1);		
 		service.addUser(user,root.getId());
 		
-		/*
+		
 
-		Organization child1 = new Organization();
+		child1 = new Organization();
 		child1.setName("子部门1");
 		child1.setDescription("测试用组织子节点");
 		child1.setCreateTime(new Date());
 		child1.setLastModifyTime(new Date());
 		child1.setPrincipal(null);
-		
+		service.addOrganization(child1, root.getId());
 		
 		
 		
@@ -61,16 +62,21 @@ public class PartyServiceTest extends BaseTestCase {
 		child2.setCreateTime(new Date());
 		child2.setLastModifyTime(new Date());
 		child2.setPrincipal(null);
-		//root.getChildren().add(child1);
-		//root.getChildren().add(child2);
-		service.updateOrganization(root);
-		*/
+		service.addOrganization(child2, root.getId());
+		
 	}
 	
 	@Test
 	public void testOrganizationList() {
 		List<Organization> orgs = service.organizationList();
 		assertEquals(1,orgs.size());
+	}
+	
+	@Test
+	public void testRemoveOrganization(){
+		service.deleteOrganization(child1.getId());
+		Organization org = service.getOrganization(child1.getId());
+		assertNull(org);
 	}
 	/*
 	@Test
