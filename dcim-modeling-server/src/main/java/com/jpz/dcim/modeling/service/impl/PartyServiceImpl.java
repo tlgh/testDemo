@@ -1,6 +1,5 @@
 package com.jpz.dcim.modeling.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import com.jpz.dcim.modeling.service.PartyService;
 
 import pers.ksy.common.MD5Util;
 import pers.ksy.common.model.Page;
-import pers.ksy.common.orm.Conditions;
 import pers.ksy.common.orm.IsCondition;
 import pers.ksy.common.orm.QueryCondition;
 import pers.ksy.common.orm.jpa.JpaHelper;
