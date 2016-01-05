@@ -17,11 +17,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "organization")
 public class Organization implements Serializable {
 	@Id
-	@GeneratedValue(generator = "uuid-hex")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
 	private String id;
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
@@ -40,7 +43,8 @@ public class Organization implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModifyTime;
 
-	private int index;
+	@Column(name = "sort_index")
+	private Integer sortIndex;
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "parent_id", nullable = true)
@@ -69,12 +73,12 @@ public class Organization implements Serializable {
 		this.id = id;
 	}
 
-	public int getIndex() {
-		return index;
+	public int getSortIndex() {
+		return sortIndex;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+	public void setSortIndex(int sortIndex) {
+		this.sortIndex = sortIndex;
 	}
 
 	public Set<User> getMembers() {
@@ -139,6 +143,10 @@ public class Organization implements Serializable {
 
 	public void setLastModifyTime(Date lastModifyTime) {
 		this.lastModifyTime = lastModifyTime;
+	}
+
+	public void setSortIndex(Integer sortIndex) {
+		this.sortIndex = sortIndex;
 	}
 
 }

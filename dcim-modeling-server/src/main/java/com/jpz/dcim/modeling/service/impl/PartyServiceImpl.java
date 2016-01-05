@@ -18,6 +18,8 @@ import com.jpz.dcim.modeling.service.PartyService;
 
 import pers.ksy.common.MD5Util;
 import pers.ksy.common.model.Page;
+import pers.ksy.common.orm.Conditions;
+import pers.ksy.common.orm.IsCondition;
 import pers.ksy.common.orm.QueryCondition;
 import pers.ksy.common.orm.jpa.JpaHelper;
 
@@ -48,9 +50,11 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Organization> organizationTree() {
-		List<Organization> list = new ArrayList<>();
-		list.add(organizationDao.get("orgRoot"));
+		QueryCondition qc = organizationDao.getQC();
+		qc.add(Conditions.is("parent.id", IsCondition.Type.NULL));
+		List<Organization> list = organizationDao.listByQC(qc);
 		for (Organization organization : list) {
 			traverseOrganizationTree(organization);
 		}

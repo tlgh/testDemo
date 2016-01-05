@@ -2,25 +2,26 @@ package com.jpz.dcim.modeling.model.dao.impl;
 
 import java.io.Serializable;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-import pers.ksy.common.orm.jpa.AbstractJpaBaseDAO;
 
 import com.jpz.dcim.modeling.model.dao.BaseDao;
 
-@Repository
-public abstract class BaseDaoImpl<T, ID extends Serializable> extends
-		AbstractJpaBaseDAO<T, ID> implements BaseDao<T, ID> {
+import pers.ksy.common.orm.hibernate4.AbstractHibernateBaseDAO;
 
-	// 注入实体管理器
-	@PersistenceContext
-	protected EntityManager entityManager;
+@Repository
+public abstract class BaseDaoImpl<T, ID extends Serializable> extends AbstractHibernateBaseDAO<T, ID>
+		implements BaseDao<T, ID> {
+
+	@Autowired
+	@Qualifier(value = "sessionFactory")
+	private SessionFactory sessionFactory;
 
 	@Override
-	protected EntityManager getEntityManager() {
-		return this.entityManager;
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
 	}
+
 }
