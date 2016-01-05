@@ -10,7 +10,7 @@ import pers.ksy.common.model.Page;
 import pers.ksy.common.orm.QueryCondition;
 
 @SuppressWarnings("rawtypes")
-public interface PartyService extends BaseService {
+public interface PartyService extends BaseService<User,String> {
 	/**
 	 * 组织机构列表
 	 * 

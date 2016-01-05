@@ -189,9 +189,9 @@ public interface JpaBaseDAO<T, ID extends Serializable> {
 	 * @param dc
 	 * @return
 	 */
-	public List listByQC(QueryCondition qc);
+	public List<T> listByQC(QueryCondition qc);
 
-	public List listByQC(QueryCondition qc, int first, int max);
+	public List<T> listByQC(QueryCondition qc, int first, int max);
 	
 
 	/**
@@ -199,7 +199,7 @@ public interface JpaBaseDAO<T, ID extends Serializable> {
 	 * @param dc
 	 * @return
 	 */
-	public Object uniqueByQC(QueryCondition qc);
+	public T uniqueByQC(QueryCondition qc);
 	
 	/**
 	 * 使用DetachedCriteria查询记录总数Count(*)

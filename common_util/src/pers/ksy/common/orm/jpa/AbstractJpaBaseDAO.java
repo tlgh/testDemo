@@ -402,17 +402,17 @@ public abstract class AbstractJpaBaseDAO<T, ID extends Serializable> extends
 	}
 
 	@Override
-	public List listByQC(QueryCondition qc) {
+	public List<T> listByQC(QueryCondition qc) {
 		return listByCQ(buildCriteriaQuery(qc));
 	}
 
 	@Override
-	public List listByQC(QueryCondition qc, int first, int max) {
+	public List<T> listByQC(QueryCondition qc, int first, int max) {
 		return listByCQ(buildCriteriaQuery(qc), first, max);
 	}
 
 	@Override
-	public Object uniqueByQC(QueryCondition qc) {
+	public T uniqueByQC(QueryCondition qc) {
 		return uniqueByCQ(buildCriteriaQuery(qc));
 	}
 

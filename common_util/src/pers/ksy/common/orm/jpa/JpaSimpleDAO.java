@@ -95,7 +95,7 @@ public abstract class JpaSimpleDAO<T> {
 		return typedQuery.getResultList();
 	}
 
-	protected Object uniqueByCQ(CriteriaQuery criteriaQuery) {
+	protected T uniqueByCQ(CriteriaQuery criteriaQuery) {
 		TypedQuery<T> typedQuery = getEntityManager()
 				.createQuery(criteriaQuery);
 		return typedQuery.getSingleResult();

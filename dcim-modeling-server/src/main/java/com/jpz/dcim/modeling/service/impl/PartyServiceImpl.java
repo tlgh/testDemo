@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.jpz.dcim.modeling.exception.ServiceException;
+import com.jpz.dcim.modeling.model.dao.BaseDao;
 import com.jpz.dcim.modeling.model.dao.OrganizationDao;
 import com.jpz.dcim.modeling.model.dao.UserDao;
 import com.jpz.dcim.modeling.model.entity.Organization;
@@ -23,7 +24,7 @@ import pers.ksy.common.orm.jpa.JpaHelper;
 
 @Transactional
 @Service
-public class PartyServiceImpl implements PartyService {
+public class PartyServiceImpl extends BaseServiceImpl<User, String> implements PartyService {
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -158,6 +159,11 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public void method4Test() {
 		throw new RuntimeException("unimplemented service method, only for test");
+	}
+
+	@Override
+	public BaseDao<User, String> getDao() {
+		return userDao;
 	}
 
 }

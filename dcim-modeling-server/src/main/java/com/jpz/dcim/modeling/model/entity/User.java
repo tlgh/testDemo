@@ -16,15 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
-
-	@Id
-	@GeneratedValue(generator = "uuid-hex")
-	private String id;
+public class User extends BaseEntity{
 	
 	@Column(nullable = false)
 	private String name; 
@@ -66,15 +63,47 @@ public class User implements Serializable {
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "organization_id", nullable = true)
 	private Organization organization;
+	
+	@Column(name = "position", nullable = false)
+	private int position = 0;
+	
+	/**
+	 * 逻辑删除标记
+	 */
+	private boolean deleted=false;
+	
+	/**
+	 * 把该用户排另一个用户之前
+	 */
+	@Transient 
+	private String beforeAt;
+	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
 
 	
-	public String getId() {
-		return id;
+	
+	public boolean isDeleted() {
+		return deleted;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
+
+	public String getBeforeAt() {
+		return beforeAt;
+	}
+
+	public void setBeforeAt(String beforeAt) {
+		this.beforeAt = beforeAt;
+	}
+
 
 	
 	public Organization getOrganization() {
