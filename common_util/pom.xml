@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pers.ksy</groupId>
 	<artifactId>common-util</artifactId>
-	<version>1.4.0-REALEASE</version>
+	<version>1.4.1-REALEASE</version>
 	<properties>
 		<aspectj.version>1.8.4</aspectj.version>
 		<gson.version>2.3.1</gson.version>

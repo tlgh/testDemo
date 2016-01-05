@@ -20,7 +20,6 @@ import org.springframework.util.Assert;
 @SuppressWarnings("rawtypes")
 public abstract class HibernateSimpleDAO {
 
-	protected SessionFactory sessionFactory;
 
 	/***
 	 * 查询数据数量
@@ -187,13 +186,9 @@ public abstract class HibernateSimpleDAO {
 		return (Long) c.uniqueResult();
 	}
 
-    @Autowired
-    @Qualifier(value = "sessionFactory")
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
 	protected Session getSession() {
-		return sessionFactory.getCurrentSession();
+		return getSessionFactory().getCurrentSession();
 	}
+	
+	public abstract SessionFactory getSessionFactory();
 }
