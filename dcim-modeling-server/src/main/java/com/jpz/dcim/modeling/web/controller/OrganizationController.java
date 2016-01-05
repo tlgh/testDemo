@@ -37,8 +37,13 @@ public class OrganizationController extends BaseController {
 	}
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.GET)
+	@SerializationFilters(filters = {
+			@SerializationFilter(target = Organization.class, fields = { "parent", "children", "members" }),
+			@SerializationFilter(target = User.class, exclusive = false, fields = { "id", "name" }) })
 	public Object get(@PathVariable String organizationId) {
-		return Result.successResult(userService.getOrganization(organizationId), null);
+		Organization organization = userService.getOrganization(organizationId);
+		organization.setParent(new Organization(organization.getParent().getId()));
+		return Result.successResult(organization, null);
 	}
 
 	@RequestMapping(path = "/{organizationId}/users", method = RequestMethod.GET)

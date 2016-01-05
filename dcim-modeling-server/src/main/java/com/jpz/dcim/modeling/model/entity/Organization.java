@@ -52,6 +52,15 @@ public class Organization implements Serializable {
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.REFRESH)
 	private Set<Organization> children = new LinkedHashSet<Organization>();
 
+	public Organization() {
+		super();
+	}
+
+	public Organization(String id) {
+		super();
+		this.id = id;
+	}
+
 	public String getId() {
 		return id;
 	}

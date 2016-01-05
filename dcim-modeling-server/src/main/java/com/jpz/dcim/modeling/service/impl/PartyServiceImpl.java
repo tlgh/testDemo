@@ -132,7 +132,11 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public Organization getOrganization(String organizationId) {
-		return organizationDao.get(organizationId);
+		Organization organization = organizationDao.getByProperty("id", organizationId, new String[] { "principal" });
+		if (null == organization) {
+			throw new ServiceException("组织机构不存在");
+		}
+		return organization;
 	}
 
 	@Override
