@@ -38,10 +38,11 @@ public class OrganizationController extends BaseController {
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.GET)
 	@SerializationFilters(filters = {
-			@SerializationFilter(target = Organization.class, fields = { "parent", "children", "members" }),
+			@SerializationFilter(target = Organization.class, fields = { "children", "members" }),
 			@SerializationFilter(target = User.class, exclusive = false, fields = { "id", "name" }) })
 	public Object get(@PathVariable String organizationId) {
 		Organization organization = userService.getOrganization(organizationId);
+		organization.setParent(new Organization(organization.getParent().getId()));
 		return Result.successResult(organization, null);
 	}
 
@@ -53,12 +54,12 @@ public class OrganizationController extends BaseController {
 
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Object save(@RequestBody Organization organization) {
-		userService.addOrganization(organization, organization.getParent().getId());
+		organization = userService.addOrganization(organization, organization.getParent().getId());
 		return Result.successResult(organization.getId(), "新增成功");
 	}
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.PUT)
-	public Object update(@PathVariable String organizationId, Organization organization) {
+	public Object update(@PathVariable String organizationId, @RequestBody Organization organization) {
 		organization.setId(organizationId);
 		userService.updateOrganization(organization);
 		return Result.successResult("更新成功");

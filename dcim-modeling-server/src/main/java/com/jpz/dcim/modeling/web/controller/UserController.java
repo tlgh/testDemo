@@ -47,18 +47,20 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.GET)
+	@SerializationFilters(filters = { @SerializationFilter(target = User.class, fields = { "password", "roles" }),
+			@SerializationFilter(target = Organization.class, exclusive = false, fields = { "id", "name" }) })
 	public Object get(@PathVariable String userId) {
 		return Result.successResult(userService.getUser(userId), null);
 	}
 
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Object save(@RequestBody User user) {
-		userService.addUser(user, user.getOrganization().getId());
-		return Result.successResult("新增成功");
+		user = userService.addUser(user, user.getOrganization().getId());
+		return Result.successResult(user.getId(), "新增成功");
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.PUT)
-	public Object update(@PathVariable String userId, User user) {
+	public Object update(@PathVariable String userId, @RequestBody User user) {
 		user.setId(userId);
 		userService.updateUser(user);
 		return Result.successResult("更新成功");

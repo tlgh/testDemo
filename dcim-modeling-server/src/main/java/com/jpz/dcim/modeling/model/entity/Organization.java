@@ -40,6 +40,13 @@ public class Organization extends BaseEntity {
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.REFRESH)
 	private List<Organization> children = new ArrayList<Organization>();
 
+	public Organization() {
+	}
+
+	public Organization(String id) {
+		super(id);
+	}
+
 	public int getPosition() {
 		return position;
 	}
