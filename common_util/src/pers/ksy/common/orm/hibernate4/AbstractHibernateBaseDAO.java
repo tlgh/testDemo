@@ -505,8 +505,8 @@ public abstract class AbstractHibernateBaseDAO<T, ID extends Serializable> exten
 	}
 
 	@Override
-	public Object uniqueByQC(QueryCondition qc) {
-		return uniqueByDC(buildDetachedCriteria(qc));
+	public T uniqueByQC(QueryCondition qc) {
+		return (T)uniqueByDC(buildDetachedCriteria(qc));
 	}
 
 	@Override

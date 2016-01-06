@@ -42,7 +42,6 @@ public class OrganizationController extends BaseController {
 			@SerializationFilter(target = User.class, exclusive = false, fields = { "id", "name" }) })
 	public Object get(@PathVariable String organizationId) {
 		Organization organization = userService.getOrganization(organizationId);
-		organization.setParent(new Organization(organization.getParent().getId()));
 		return Result.successResult(organization, null);
 	}
 

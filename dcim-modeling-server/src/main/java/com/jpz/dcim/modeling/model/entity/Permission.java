@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "permission")
+@Table(name="permission")
 public class Permission implements Serializable {
 	private String id;
 	private String name;

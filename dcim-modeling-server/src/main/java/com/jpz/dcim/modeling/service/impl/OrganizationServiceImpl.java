@@ -32,7 +32,7 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, Strin
 
 	@Override
 	public Organization addOrg(Organization org, String parentId) {
-		Organization parent = dao.get(parentId);
+		Organization parent = parentId==null?null:dao.get(parentId);
 		if(parent!=null){
 			org.setParent(parent);
 		}

@@ -2,9 +2,7 @@ package com.jpz.dcim.modeling.model.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,8 +18,6 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "organization")
 public class Organization extends BaseEntity{
-	
-
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "principal_user_id")
 	private User principal;
