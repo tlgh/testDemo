@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.ForeignKey;
 
 
 @Entity
@@ -37,7 +39,7 @@ public class Organization extends BaseEntity{
 	private int position;
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "parent_id", nullable = true)
+	@JoinColumn(name = "parent_id", nullable = true,foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	private Organization parent = null;
 
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.REFRESH)

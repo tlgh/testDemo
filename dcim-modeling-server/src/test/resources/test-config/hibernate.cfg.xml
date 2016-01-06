@@ -10,9 +10,12 @@
 		org.hibernate.dialect.MySQLDialect
 	</property>
 	<!-- Enable Hibernate's automatic session context management -->
+	
 	<property name="current_session_context_class">
 		org.springframework.orm.hibernate4.SpringSessionContext
 	</property>
+	
+	
 	<!-- Disable the second-level cache -->
 	<property name="cache.provider_class">
 		org.hibernate.cache.internal.NoCacheProvider

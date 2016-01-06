@@ -1,8 +1,12 @@
 package com.jpz.dcim.modeling.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +16,6 @@ import com.jpz.dcim.modeling.BaseTestCase;
 import com.jpz.dcim.modeling.model.dao.BaseDao;
 import com.jpz.dcim.modeling.model.dao.OrganizationDao;
 import com.jpz.dcim.modeling.model.entity.Organization;
-import com.jpz.dcim.modeling.model.entity.User;
 import com.jpz.dcim.modeling.service.OrganizationService;
 
 public class OrganizationServiceTest extends BaseTestCase{
@@ -24,6 +27,7 @@ public class OrganizationServiceTest extends BaseTestCase{
 	
 	@Before
 	public void setup(){
+		service.deleteAll();
 		//初始化一个根部门,两个子部门
 		root = new Organization();
 		root.setCreateTime(new Date());
@@ -61,17 +65,34 @@ public class OrganizationServiceTest extends BaseTestCase{
 
 	@Test
 	public void testAddOrg() {
-		fail("Not yet implemented");
+		Organization org = new Organization();
+		org.setName("子部门3");
+		org.setDescription("测试用组织子节点");
+		org.setCreateTime(new Date());
+		org.setLastModifyTime(new Date());
+		org.setPrincipal(null);
+		service.addOrg(org, root.getId());
+		
+		Organization loaded = service.get(org.getId());
+		assertNotNull(loaded);
+		assertEquals("子部门3",loaded.getName());
+		assertEquals(root,loaded.getParent());
 	}
 
 	@Test
 	public void testMoveOrgBefore() {
+		
 		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testGetRoot() {
-		fail("Not yet implemented");
+		Organization loadedRoot = service.getRoot();
+		assertNotNull(loadedRoot);
+		assertEquals(root,loadedRoot);
+		List<Organization> children = loadedRoot.getChildren();
+		assertNotNull(children);
+		assertEquals(2,children.size());
 	}
 
 }

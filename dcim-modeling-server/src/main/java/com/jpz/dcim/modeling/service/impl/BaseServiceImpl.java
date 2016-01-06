@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpz.dcim.modeling.service.BaseService;
 
 import pers.ksy.common.model.Page;
 import pers.ksy.common.orm.Order;
 import pers.ksy.common.orm.QueryCondition;
 
+
+@Transactional
 public abstract class BaseServiceImpl<T ,ID extends Serializable> implements BaseService<T,ID> {	
 	public T get(ID id) {
 		return getDao().get(id);
@@ -115,7 +119,8 @@ public abstract class BaseServiceImpl<T ,ID extends Serializable> implements Bas
 	public Long countByProperties(String[] propNames, Object[] propVals) {
 		return getDao().countByProperties(propNames, propVals);
 	}
-
+	
+	
 	public void deleteAll() {
 		getDao().deleteAll();
 	}
