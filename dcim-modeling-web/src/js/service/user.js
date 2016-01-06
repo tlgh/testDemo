@@ -59,6 +59,13 @@ define([
 				resultHandler: success
 			});
 		},
+		getUser: function(userId, success) {
+			$.ajax({
+				type: "GET",
+				url: basePath + userPath + "/" + userId,
+				resultHandler: success
+			});
+		},
 		addUser: function(user, success) {
 			$.ajax({
 				type: "POST",
@@ -79,13 +86,18 @@ define([
 				resultHandler: success
 			});
 		},
+		saveOrUpdateUser: function(user, success) {
+			if (user.id) {
+				this.updateUser(user, success);
+			} else {
+				this.addUser(user, success);
+			}
+		},
 		deleteUser: function(userId, success) {
 			$.ajax({
 				type: "DELETE",
 				showSuccessMsg: true,
 				url: basePath + userPath + "/" + userId,
-				data: JSON.stringify(user),
-				contentType: 'application/json;charset=utf-8',
 				resultHandler: success
 			});
 		},

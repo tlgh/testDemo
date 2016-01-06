@@ -2,12 +2,30 @@
  * Created by boil on 2015-12-14.
  */
 "use strict"
-define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'], function(userService, userModel, organizationModel, arrayUtil) {
+define([
+	'service/user',
+	'util/array',
+	'util/url',
+	'ZY'
+], function(userService, arrayUtil, urlUtil) {
 	var selectOrganization = $('#selectOrganization');
 	var form = new ZY.UI.Form("userForm");
 
 	//init datas
-	form.setValue({});
+	var user = {};
+	var userId = urlUtil.getUrlParameter('userId');
+	var organizationId = urlUtil.getUrlParameter('organizationId');
+	if (userId) {
+		userService.getUser(userId, function(result) {
+			if (result.header.success) {
+				user = result.body;
+				form.setValue(user);
+			}
+		});
+	} else {
+		form.setValue(user);
+	}
+
 	userService.organizationTree(function(result) {
 		selectOrganization.empty();
 
@@ -20,6 +38,9 @@ define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'],
 			option.text(name);
 			option.val(child.id);
 			selectOrganization.append(option);
+			if (organizationId) {
+				selectOrganization.val(organizationId);
+			}
 		});
 	});
 
@@ -27,10 +48,12 @@ define(['service/user', 'model/user', 'model/organization', 'util/array', 'ZY'],
 	$('#userForm').submit(function() {
 		var user = form.getValue();
 		user.birthday = user.birthday + ' 00:00:00';
-		userModel.add(user, function(result) {
-			alert(result.header.success ? "添加成功":"添加失败");
+		userService.saveOrUpdateUser(user, function(result) {
 			if (result.header.success) {
-				window.closeDlg(result.body);
+				if (!userId) {
+					user.id = result.body;
+				}
+				window.closeDlg(user);
 			}
 		});
 		return false;
