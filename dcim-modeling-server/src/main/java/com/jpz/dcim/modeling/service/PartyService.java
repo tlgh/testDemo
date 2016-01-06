@@ -9,7 +9,6 @@ import com.jpz.dcim.modeling.model.entity.User;
 import pers.ksy.common.model.Page;
 import pers.ksy.common.orm.QueryCondition;
 
-@SuppressWarnings("rawtypes")
 public interface PartyService extends BaseService<User,String> {
 	/**
 	 * 组织机构列表
@@ -27,12 +26,31 @@ public interface PartyService extends BaseService<User,String> {
 	List<User> findUserByOrg(String organizationId);
 	
 	
+	/**
+	 * 新增用户
+	 * @param user
+	 * @param orgId
+	 */
 	void addUser(User user,String orgId);
 
+	/**
+	 * 修改用户
+	 * @param user
+	 * @throws ServiceException
+	 */
 	void updateUser(User user) throws ServiceException;
 	
+	/**
+	 * 获取用户信息
+	 * @param userId
+	 * @return
+	 */
 	User getUser(String userId);
 	
+	/**
+	 * 删除用户
+	 * @param userId
+	 */
 	void deleteUser(String userId);
 	
 	/**
@@ -43,19 +61,53 @@ public interface PartyService extends BaseService<User,String> {
 	 */
 	void addOrganization(Organization organization,String parentId);
 	
+	/**
+	 * 更新机构
+	 * @param Organization
+	 * @throws ServiceException
+	 */
 	void updateOrganization(Organization Organization) throws ServiceException;
 
+	/**
+	 * 获取机构信息
+	 * @param organizationId
+	 * @return
+	 */
 	Organization getOrganization(String organizationId);
 	
+	/**
+	 * 删除机构
+	 * @param organizationId
+	 */
 	void deleteOrganization(String organizationId);
 
+	/**
+	 * 用户分页查询
+	 * @param pageIndex
+	 * @param pageSize
+	 * @param queryCondition
+	 * @return
+	 */
 	Page<User> findPage(int pageIndex, int pageSize,
 			QueryCondition queryCondition);
 
+	/**
+	 * 用户登录
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws ServiceException
+	 */
 	User login(String username, String password) throws ServiceException;
 	
+	/**
+	 * 删除所有用户
+	 */
 	void deleteAllUsers();
 	
+	/**
+	 * 删除所有组织机构
+	 */
 	void deleteAllOrganizations();
 
 	/**
