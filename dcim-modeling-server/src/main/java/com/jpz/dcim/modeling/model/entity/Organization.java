@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.ForeignKey;
 
 
+
 @Entity
 @Table(name = "organization")
 public class Organization extends BaseEntity{
@@ -39,7 +40,7 @@ public class Organization extends BaseEntity{
 	private int position;
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "parent_id", nullable = true,foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "parent_id", nullable = true)
 	private Organization parent = null;
 
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.REFRESH)
