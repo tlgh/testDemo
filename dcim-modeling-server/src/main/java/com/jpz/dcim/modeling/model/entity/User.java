@@ -43,14 +43,6 @@ public class User extends BaseEntity{
 	
 	private Date birthday;
 	
-	@Column(name = "create_time", length = 19, nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createTime;
-	
-	@Column(name = "last_modify_time", length = 19)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastModifyTime;
-	
 	@Column(name = "last_login_time", length = 19)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastLoginTime;
@@ -174,24 +166,6 @@ public class User extends BaseEntity{
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-	}
-
-	
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	
-	public Date getLastModifyTime() {
-		return lastModifyTime;
-	}
-
-	public void setLastModifyTime(Date lastModifyTime) {
-		this.lastModifyTime = lastModifyTime;
 	}
 
 	

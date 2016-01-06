@@ -24,8 +24,6 @@ import org.hibernate.annotations.GenericGenerator;
 public class Role implements Serializable {
 	private String id;
 	private String name;
-	private Date createTime;
-	private Date lastModifyTime;
 	private List<Permission> permissions;
 
 	@Id
@@ -45,26 +43,6 @@ public class Role implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Column(name = "create_time", length = 19)
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	@Column(name = "last_modify_time", length = 19)
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getLastModifyTime() {
-		return lastModifyTime;
-	}
-
-	public void setLastModifyTime(Date lastModifyTime) {
-		this.lastModifyTime = lastModifyTime;
 	}
 
 	@ManyToMany(cascade = { CascadeType.PERSIST })
