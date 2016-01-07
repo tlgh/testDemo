@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jpz.dcim.modeling.BaseTestCase;
+import com.jpz.dcim.modeling.exception.ServiceException;
 import com.jpz.dcim.modeling.model.entity.Organization;
 import com.jpz.dcim.modeling.model.entity.User;
 
@@ -69,14 +70,17 @@ public class PartyServiceTest extends BaseTestCase {
 	@Test
 	public void testOrganizationList() {
 		List<Organization> orgs = service.organizationList();
-		assertEquals(1,orgs.size());
+		assertEquals(3,orgs.size());
 	}
 	
 	@Test
 	public void testRemoveOrganization(){
 		service.deleteOrganization(child1.getId());
-		Organization org = service.getOrganization(child1.getId());
-		assertNull(org);
+		try {
+			Organization org = service.getOrganization(child1.getId());
+		} catch (ServiceException e) {
+			assertTrue(true);
+		}
 	}
 	/*
 	@Test
