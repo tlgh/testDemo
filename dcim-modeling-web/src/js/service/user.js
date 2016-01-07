@@ -26,7 +26,7 @@ define([
 				}
 			}
 		},
-		login: function(username, password, success) {
+		login: function(username, password, success, done) {
 			password = stringUtil.md5(password);
 			$.ajax({
 				type: "POST",
@@ -35,14 +35,13 @@ define([
 				data: {
 					username: username,
 					password: password
-				},
-				resultHandler: function(result) {
-					if (result.header.success) {
-						var user = result.body;
-						window.sessionStorage.setItem(App.Constants.SESSION_USER_KEY, JSON.stringify(user));
-					}
-					success(result);
 				}
+			}).done(function(result, status, jqXHR) {
+				if (result.header.success) {
+					var user = result.body;
+					window.sessionStorage.setItem(App.Constants.SESSION_USER_KEY, JSON.stringify(user));
+				}
+				success(result);
 			});
 		},
 		logoff: function() {
@@ -55,9 +54,14 @@ define([
 				data: {
 					organizationId: organizationId,
 					name: name
-				},
-				resultHandler: success
-			});
+				}
+			}).done(success);
+		},
+		getUser: function(userId, success) {
+			$.ajax({
+				type: "GET",
+				url: basePath + userPath + "/" + userId
+			}).done(success);
 		},
 		addUser: function(user, success) {
 			$.ajax({
@@ -65,9 +69,8 @@ define([
 				showSuccessMsg: false,
 				url: basePath + userPath + "/",
 				data: JSON.stringify(user),
-				contentType: 'application/json;charset=utf-8',
-				resultHandler: success
-			});
+				contentType: 'application/json;charset=utf-8'
+			}).done(success);
 		},
 		updateUser: function(user, success) {
 			$.ajax({
@@ -75,41 +78,41 @@ define([
 				showSuccessMsg: false,
 				url: basePath + userPath + "/" + user.id,
 				data: JSON.stringify(user),
-				contentType: 'application/json;charset=utf-8',
-				resultHandler: success
-			});
+				contentType: 'application/json;charset=utf-8'
+			}).done(success);
+		},
+		saveOrUpdateUser: function(user, success) {
+			if (user.id) {
+				this.updateUser(user, success);
+			} else {
+				this.addUser(user, success);
+			}
 		},
 		deleteUser: function(userId, success) {
 			$.ajax({
 				type: "DELETE",
 				showSuccessMsg: true,
-				url: basePath + userPath + "/" + userId,
-				data: JSON.stringify(user),
-				contentType: 'application/json;charset=utf-8',
-				resultHandler: success
-			});
+				url: basePath + userPath + "/" + userId
+			}).done(success);
 		},
 		organizationTree: function(success, showLoading) {
 			$.ajax({
 				type: "GET",
 				showLoading: showLoading,
-				url: basePath + organizationPath + "/tree",
-				resultHandler: success
-			});
+				url: basePath + organizationPath + "/tree"
+			}).done(success);
 		},
 		organizationList: function(success) {
 			$.ajax({
 				type: "GET",
-				url: basePath + organizationPath + "/list",
-				resultHandler: success
-			});
+				url: basePath + organizationPath + "/list"
+			}).done(success);
 		},
 		getOrganization: function(organizationId, success) {
 			$.ajax({
 				type: "GET",
-				url: basePath + organizationPath + "/" + organizationId,
-				resultHandler: success
-			});
+				url: basePath + organizationPath + "/" + organizationId
+			}).done(success);
 		},
 		addOrganization: function(organization, success) {
 			$.ajax({
@@ -117,9 +120,8 @@ define([
 				url: basePath + organizationPath + "/",
 				data: JSON.stringify(organization),
 				showSuccessMsg: false,
-				contentType: 'application/json;charset=utf-8',
-				resultHandler: success
-			});
+				contentType: 'application/json;charset=utf-8'
+			}).done(success);
 		},
 		updateOrganization: function(organization, success) {
 			$.ajax({
@@ -127,9 +129,8 @@ define([
 				url: basePath + organizationPath + "/" + organization.id,
 				data: JSON.stringify(organization),
 				showSuccessMsg: true,
-				contentType: 'application/json;charset=utf-8',
-				resultHandler: success
-			});
+				contentType: 'application/json;charset=utf-8'
+			}).done(success);
 		},
 		saveOrUpdateOrganization: function(organization, success) {
 			if (organization.id) {
@@ -142,16 +143,14 @@ define([
 			$.ajax({
 				type: "DELETE",
 				showSuccessMsg: true,
-				url: basePath + organizationPath + "/" + organizationId,
-				resultHandler: success
-			});
+				url: basePath + organizationPath + "/" + organizationId
+			}).done(success);
 		},
 		organizationUsers: function(organizationId, success) {
 			$.ajax({
 				type: "GET",
-				url: basePath + organizationPath + "/" + organizationId + '/users',
-				resultHandler: success
-			});
+				url: basePath + organizationPath + "/" + organizationId + '/users'
+			}).done(success);
 		}
 	};
 	App.Services.User.prototype.constructor = App.Services.User;

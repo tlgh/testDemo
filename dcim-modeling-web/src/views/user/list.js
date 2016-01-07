@@ -156,17 +156,72 @@ define(['service/user', 'ZY'], function(userService) {
 	});
 
 	$('#btnAddUser').click(function() {
-		var organizationId = tree.getSelectedNode().data.id;
+		var organizationId = '';
+		var node = tree.getSelectedNode();
+		if (node) {
+			organizationId = node.data.id;
+		}
 		window.openDlg({
 			url: "user-dialog.html?organizationId=" + organizationId, //在应用中需要修改为特定页面的url
 			width: 600,
 			height: 630,
 			title: "新增用户",
-			callback: function(organization) {
-				if (organization) {
-					console.log(organization);
+			callback: function(user) {
+				if (user) {
+					grid.appendRow(user);
 				}
 			}
+		});
+	});
+
+	$('#btnEditUser').click(function() {
+		var organizationId = '';
+		var node = tree.getSelectedNode();
+		if (node) {
+			organizationId = node.data.id;
+		}
+		var row = grid.getSelectedRows()[0];
+		if (!row) {
+			swal("警告!", "请选中需要修改的用户.", "warning");
+			return;
+		}
+		var user = row.data;
+		window.openDlg({
+			url: "user-dialog.html?userId=" + user.id + "&organizationId=" + organizationId, //在应用中需要修改为特定页面的url
+			width: 600,
+			height: 630,
+			title: "新增用户",
+			callback: function(user) {
+				if (user) {
+					row.update(user);
+				}
+			}
+		});
+	});
+
+	$('#btnDeleteUser').click(function() {
+		var row = grid.getSelectedRows()[0];
+		if (!row) {
+			swal("警告!", "请选中需要删除的用户.", "warning");
+			return;
+		}
+		var user = row.data;
+		swal({
+			title: "确定这样操作吗?",
+			text: "您将删除名称为：'" + user.name + "'的用户，确定要这样操作吗?",
+			type: "warning",
+			showCancelButton: true,
+			cancelButtonText: "取消",
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "删除!",
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true
+		}, function() {
+			userService.deleteUser(user.id, function(result) {
+				if (result.header.success) {
+					grid.removeRow(row);
+				}
+			});
 		});
 	});
 

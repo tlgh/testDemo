@@ -9,7 +9,7 @@ import com.jpz.dcim.modeling.model.entity.User;
 import pers.ksy.common.model.Page;
 import pers.ksy.common.orm.QueryCondition;
 
-public interface PartyService extends BaseService<User,String> {
+public interface PartyService {
 	/**
 	 * 组织机构列表
 	 * 
@@ -30,22 +30,23 @@ public interface PartyService extends BaseService<User,String> {
 	 * 新增用户
 	 * @param user
 	 * @param orgId
+	 * @return 
 	 */
-	void addUser(User user,String orgId);
+	User addUser(User user,String orgId);
 
 	/**
 	 * 修改用户
 	 * @param user
 	 * @throws ServiceException
 	 */
-	void updateUser(User user) throws ServiceException;
+	User updateUser(User user) throws ServiceException;
 	
 	/**
 	 * 获取用户信息
 	 * @param userId
 	 * @return
 	 */
-	User getUser(String userId);
+	User getUser(String userId) throws ServiceException;
 	
 	/**
 	 * 删除用户
@@ -59,21 +60,21 @@ public interface PartyService extends BaseService<User,String> {
 	 * @param parentId
 	 * @return
 	 */
-	void addOrganization(Organization organization,String parentId);
+	Organization addOrganization(Organization organization,String parentId);
 	
 	/**
 	 * 更新机构
-	 * @param Organization
+	 * @param organization
 	 * @throws ServiceException
 	 */
-	void updateOrganization(Organization Organization) throws ServiceException;
+	Organization updateOrganization(Organization organization) throws ServiceException;
 
 	/**
 	 * 获取机构信息
 	 * @param organizationId
 	 * @return
 	 */
-	Organization getOrganization(String organizationId);
+	Organization getOrganization(String organizationId) throws ServiceException;
 	
 	/**
 	 * 删除机构

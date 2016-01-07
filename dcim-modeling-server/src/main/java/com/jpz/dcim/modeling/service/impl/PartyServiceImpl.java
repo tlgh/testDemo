@@ -6,10 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import com.jpz.dcim.modeling.exception.ServiceException;
-import com.jpz.dcim.modeling.model.dao.BaseDao;
 import com.jpz.dcim.modeling.model.dao.OrganizationDao;
 import com.jpz.dcim.modeling.model.dao.UserDao;
 import com.jpz.dcim.modeling.model.entity.Organization;
@@ -17,6 +15,7 @@ import com.jpz.dcim.modeling.model.entity.User;
 import com.jpz.dcim.modeling.service.PartyService;
 
 import pers.ksy.common.MD5Util;
+import pers.ksy.common.StringUtil;
 import pers.ksy.common.model.Page;
 import pers.ksy.common.orm.IsCondition;
 import pers.ksy.common.orm.QueryCondition;
@@ -24,7 +23,7 @@ import pers.ksy.common.orm.jpa.JpaHelper;
 
 @Transactional
 @Service
-public class PartyServiceImpl extends BaseServiceImpl<User, String> implements PartyService {
+public class PartyServiceImpl extends CommonService implements PartyService {
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -38,6 +37,8 @@ public class PartyServiceImpl extends BaseServiceImpl<User, String> implements P
 		} else if (!password.equals(user.getPassword())) {
 			throw new ServiceException("密码错误");
 		}
+		user.setLastLoginTime(new Date());
+		userDao.update(user);
 		JpaHelper.initialize(user.getOrganization());
 		return user;
 	}
@@ -75,34 +76,26 @@ public class PartyServiceImpl extends BaseServiceImpl<User, String> implements P
 	}
 
 	@Override
-	public void addUser(User user, String orgId) {
+	public User addUser(User user, String orgId) {
 		user.setPassword(MD5Util.MD5("123456"));
-		user.setCreateTime(new Date());
-		if (orgId != null && orgId.isEmpty() == false) {
-			Organization org = this.getOrganization(orgId);
-			user.setOrganization(org);
+		if (StringUtil.notEmpty(orgId)) {
+			user.setOrganization(organizationDao.get(orgId));
 		}
-		userDao.save(user);
+		return (User) save(user);
 	}
 
 	@Override
-	public void updateUser(User user) throws ServiceException {
-		Assert.notNull(user.getId());
-		User old = userDao.get(user.getId());
-		if (null == old) {
-			throw new ServiceException("用户不存在");
-		}
-		user.setUsername(old.getUsername());
-		user.setPassword(old.getPassword());
-		user.setCreateTime(old.getCreateTime());
-		user.setLastLoginTime(old.getLastLoginTime());
-		user.setLastModifyTime(new Date());
-		userDao.save(user);
+	public User updateUser(User user) throws ServiceException {
+		return (User) update(user, new String[] { "roles", "username", "password", "lastLoginTime" }, false);
 	}
-
+	
 	@Override
 	public User getUser(String userId) {
-		return userDao.get(userId);
+		User user = userDao.getByProperty("id", userId, new String[] { "organization" });
+		if (null == user) {
+			throw new ServiceException("用户不存在");
+		}
+		return user;
 	}
 
 	@Override
@@ -111,29 +104,20 @@ public class PartyServiceImpl extends BaseServiceImpl<User, String> implements P
 	}
 
 	@Override
-	public void addOrganization(Organization organization, String parentId) {
-		organization.setCreateTime(new Date());
-		if (parentId != null) {
-			Organization parent = this.getOrganization(parentId);
-			organization.setParent(parent);
+	public Organization addOrganization(Organization organization, String parentId) {
+		if(StringUtil.notEmpty(parentId)){
+			organization.setParent(organizationDao.get(parentId));
 		}
-		organizationDao.save(organization);
+		return (Organization) save(organization);
 	}
 
 	@Override
-	public void updateOrganization(Organization Organization) throws ServiceException {
-		Assert.notNull(Organization.getId());
-		Organization old = organizationDao.get(Organization.getId());
-		if (null == old) {
-			throw new ServiceException("部门不存在");
-		}
-		Organization.setCreateTime(old.getCreateTime());
-		Organization.setLastModifyTime(new Date());
-		organizationDao.update(Organization);
+	public Organization updateOrganization(Organization organization) throws ServiceException {
+		return (Organization) update(organization);
 	}
 
 	@Override
-	public Organization getOrganization(String organizationId) {
+	public Organization getOrganization(String organizationId) throws ServiceException{
 		Organization organization = organizationDao.getByProperty("id", organizationId, new String[] { "principal" });
 		if (null == organization) {
 			throw new ServiceException("组织机构不存在");
@@ -164,11 +148,6 @@ public class PartyServiceImpl extends BaseServiceImpl<User, String> implements P
 	@Override
 	public void method4Test() {
 		throw new RuntimeException("unimplemented service method, only for test");
-	}
-
-	@Override
-	public BaseDao<User, String> getDao() {
-		return userDao;
 	}
 
 }

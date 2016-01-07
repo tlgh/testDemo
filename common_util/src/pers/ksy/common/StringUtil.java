@@ -2,7 +2,7 @@ package pers.ksy.common;
 
 public class StringUtil {
 	public static boolean isEmpty(String str) {
-		return null == str || "".equals(str);
+		return null == str || str.isEmpty();
 	}
 
 	public static boolean notEmpty(String str) {

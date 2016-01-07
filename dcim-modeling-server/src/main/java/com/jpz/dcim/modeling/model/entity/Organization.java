@@ -70,6 +70,13 @@ public class Organization extends BaseEntity {
 		this.deleted = deleted;
 	}
 
+	public Organization() {
+	}
+
+	public Organization(String id) {
+		super(id);
+	}
+
 	public int getPosition() {
 		return position;
 	}

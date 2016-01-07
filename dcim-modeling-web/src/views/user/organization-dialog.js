@@ -1,7 +1,12 @@
 /**
  * Created by boil on 2015-12-14.
  */
-define(['service/user', 'util/array', 'util/url', 'ZY'], function(userService, arrayUtil, urlUtil) {
+define([
+	'service/user',
+	'util/array',
+	'util/url',
+	'ZY'
+], function(userService, arrayUtil, urlUtil) {
 	var selectParent = $('#selectParent');
 	var form = new ZY.UI.Form("organizationForm");
 
