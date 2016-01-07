@@ -14,10 +14,10 @@ public class Page<T> {
 		this.pageIndex = pageIndex;
 		this.total = total;
 		this.pageSize = pageSize;
-		this.list = list;		
-		double a  = total/pageSize;
-		pageAmount =Math.round( Math.ceil(a)); 
-	}	
+		this.list = list;
+		double a = (double) total / pageSize;
+		pageAmount = Math.round(Math.ceil(a));
+	}
 
 	public long getPageAmount() {
 		return pageAmount;
