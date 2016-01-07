@@ -1,8 +1,11 @@
 package com.jpz.dcim.modeling.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Column;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		return userDao;
 	}
 
-	
 
 	@Override
 	public User addUser(User user, String orgId)throws ServiceException {
@@ -46,8 +48,24 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		if(org==null)
 			throw new ServiceException("指定的用户部门不存在！");
 		
+		org.addMembers(user);
+		user.setPosition(org.getMembers().size()-1);
 		user.setOrganization(org);
 		userDao.save(user);
+		return user;
+	}
+	
+	@Override
+	public User update(User user)throws ServiceException{		
+		User u = userDao.update(user, "name","sex","email","mobile","birthday","lastModifyTime");
+		return u;
+	}
+	
+	@Override
+	public User delete(String id)throws ServiceException{
+		User user = userDao.get(id);
+		user.setDeleted(true);
+		userDao.update(user);
 		return user;
 	}
 
@@ -68,17 +86,40 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 			throw new ServiceException("当前部门不存在id="+otherId+"的用户！");
 		int oldIndex = brothers.indexOf(user);
 		int newIndex = brothers.indexOf(other);
-		brothers.add(newIndex, user);
+		if(oldIndex==newIndex)
+			return user;
+		
 		if(oldIndex!=-1){
-			brothers.remove(oldIndex);
+			if(newIndex<oldIndex){
+				brothers.remove(oldIndex);
+				brothers.add(newIndex, user);
+			}else{
+				brothers.add(newIndex,user);
+				brothers.remove(oldIndex);
+			}
 		}else
 			throw new ServiceException("当前用户不存在！");
 		Map<String,Object> upset = new HashMap<String,Object>();
 		int i = 0;
 		for(User one :brothers){
-			upset.put("position", i);
-			userDao.updatePropertiesById(upset, one.getId());
+			one.setPosition(i);
+			userDao.update(one, "position");
 			i++;
+		}
+		return user;
+	}
+	
+	@Override
+	public User moveUserLast(User user) {
+		Organization org =user.getOrganization();
+		List<User> members = org.getMembers();
+		int p = members.indexOf(user);
+		members.remove(p);
+		members.add(user);
+		for(int i=p;i<members.size();i++){
+			User u = members.get(i);
+			u.setPosition(i);
+			this.update(u, "position");
 		}
 		return user;
 	}
@@ -90,7 +131,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 			throw new ServiceException("指定的部门不存在！");
 		
 		user.setOrganization(org);
-		userDao.update(user);
+		userDao.update(user, "organization");
 		return user;
 	}
 
@@ -101,5 +142,17 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 		List<User> users = userDao.listByQC(condition);
 		return users;
 	}
+
+
+	@Override
+	public User getUserByUsername(String username) {
+		QueryCondition qc = new QueryConditionImpl(User.class,null);
+		qc.add(Conditions.eq("username", username));
+		User user = userDao.uniqueByQC(qc);
+		return user;
+	}
+
+
+	
 
 }

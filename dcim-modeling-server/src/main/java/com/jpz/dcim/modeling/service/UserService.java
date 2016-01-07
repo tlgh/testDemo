@@ -13,6 +13,19 @@ public interface UserService extends BaseService<User,String>{
 	 */
 	public User addUser(User user,String orgId);
 	
+	
+	/**
+	 * 更新用户
+	 */
+	public User update(User user);
+	
+	/**
+	 * 逻辑删除用户
+	 * @param user
+	 * @return
+	 */
+	public User delete(String id);
+	
 	/**
 	 * 移动用户位置到当前部门另一个用户之后
 	 * @param user
@@ -20,6 +33,13 @@ public interface UserService extends BaseService<User,String>{
 	 * @return
 	 */
 	public User moveUserBefore(User user,String otherId);
+	
+	/**
+	 * 移动用户到当前部门的最后位置
+	 * @param user1
+	 * @return
+	 */
+	public User moveUserLast(User user1);
 	
 	/**
 	 * 转移用户到另一个部门，放在该部门的最后一位
@@ -35,4 +55,12 @@ public interface UserService extends BaseService<User,String>{
 	 * @return
 	 */
 	public List<User> getUsersInOrg(String orgId);
+	
+	/**
+	 * 根据登录名查找用户
+	 * @return
+	 */
+	public User getUserByUsername(String username);
+
+	
 }

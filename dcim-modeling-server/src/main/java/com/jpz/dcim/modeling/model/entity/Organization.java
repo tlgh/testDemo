@@ -1,18 +1,20 @@
 package com.jpz.dcim.modeling.model.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -31,15 +33,42 @@ public class Organization extends BaseEntity {
 	private int position;
 
 	@ForeignKey(name = "null")
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne()
 	@JoinColumn(name = "parent_id", nullable = true)
 	private Organization parent = null;
 
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "organization")
 	private List<User> members = new ArrayList<User>();
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "parent")
+	@OrderBy(value="position ASC")
 	private List<Organization> children = new ArrayList<Organization>();
+	
+	/**
+	 * 逻辑删除标记
+	 */
+	@Column(name="isDeleted", nullable=false )
+	private Boolean deleted=false;
+	
+	@Transient
+	private String shouldBeforeAt ;
+	
+
+	public String getShouldBeforeAt() {
+		return shouldBeforeAt;
+	}
+
+	public void setShouldBeforeAt(String shouldBeforeAt) {
+		this.shouldBeforeAt = shouldBeforeAt;
+	}
+
+	public Boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public int getPosition() {
 		return position;
@@ -47,6 +76,11 @@ public class Organization extends BaseEntity {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+	
+	public void addMembers(User user) {
+		this.getMembers();
+		this.members.add(user);
 	}
 
 	public List<User> getMembers() {
@@ -59,6 +93,11 @@ public class Organization extends BaseEntity {
 
 	public List<Organization> getChildren() {
 		return children;
+	}
+	
+	public void addChildren(Organization org){
+		this.getChildren();
+		this.children.add(org);
 	}
 
 	public void setChildren(List<Organization> children) {
@@ -96,5 +135,7 @@ public class Organization extends BaseEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	
 
 }

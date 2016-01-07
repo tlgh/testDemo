@@ -30,6 +30,10 @@ public abstract class BaseServiceImpl<T ,ID extends Serializable> implements Bas
 	public T update(T entity) {
 		return getDao().update(entity);
 	}
+	
+	public T update(T entity,String... fieldNames){
+		return getDao().update(entity,fieldNames);
+	}
 
 	public T saveOrUpdate(T entity) {
 		return getDao().saveOrUpdate(entity);

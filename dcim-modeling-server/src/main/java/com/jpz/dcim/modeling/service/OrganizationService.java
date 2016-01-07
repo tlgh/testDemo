@@ -23,10 +23,20 @@ public interface OrganizationService extends BaseService<Organization,String>{
 	public Organization moveOrgBefore(Organization org,String otherId);
 	
 	/**
+	 * 移动当前部门到最后的位置
+	 * @param org
+	 * @return
+	 */
+	public Organization moveToLast(Organization org);
+	
+	/**
 	 * 获取机构目录根节点
 	 * @return
 	 */
 	public Organization getRoot();
+
+
+	
 	
 
 }

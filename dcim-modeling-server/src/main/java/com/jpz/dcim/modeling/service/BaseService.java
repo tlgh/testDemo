@@ -46,6 +46,14 @@ public interface BaseService<T,ID extends Serializable> {
 	 * @return 实体对象
 	 */
 	public T update(T entity);
+	
+	/**
+	 * 将指定的字段值更新到数据库
+	 * @param entity
+	 * @param fieldNames
+	 * @return
+	 */
+	public T update(T entity,String ... fieldNames);
 
 	/**
 	 * 保存或更新对象

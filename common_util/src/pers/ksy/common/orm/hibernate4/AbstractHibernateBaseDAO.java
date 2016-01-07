@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.hibernate.LockMode;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Junction;
@@ -26,6 +27,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
 import pers.ksy.common.model.Page;
@@ -241,6 +243,14 @@ public abstract class AbstractHibernateBaseDAO<T, ID extends Serializable> exten
 	public T update(T entity) {
 		Assert.notNull(entity);
 		getSession().update(entity);
+		return entity;
+	}
+	@Override
+	public T update(T entity,String ... fieldNames){
+		Session s = getSession();		
+		T managed = (T) s.load(this.getEntityClass(), getIdFromEntity(entity));
+		BeanUtils.copyProperties(entity, managed, fieldNames);
+		s.update(managed);
 		return entity;
 	}
 
@@ -463,7 +473,8 @@ public abstract class AbstractHibernateBaseDAO<T, ID extends Serializable> exten
 				whereHql = whereHql.substring(0, whereHql.length() - 3);
 			}
 			Query query = createQuery(hql + setHql + whereHql, list.toArray());
-			return query.executeUpdate();
+			int updated = query.executeUpdate();
+			return updated;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

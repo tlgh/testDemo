@@ -42,6 +42,8 @@ public interface JpaBaseDAO<T, ID extends Serializable> {
 	 * @return 实体对象
 	 */
 	public T update(T entity);
+	
+	public T update(T entity, String... fieldNames);
 
 	/**
 	 * 保存或更新对象

@@ -6,4 +6,5 @@ import pers.ksy.common.orm.jpa.JpaBaseDAO;
 
 public interface BaseDao<T, ID extends Serializable> extends JpaBaseDAO<T, ID> {
 
+
 }
