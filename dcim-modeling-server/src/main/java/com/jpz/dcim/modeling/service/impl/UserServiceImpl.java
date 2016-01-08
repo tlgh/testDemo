@@ -125,11 +125,15 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
 	}
 
 	@Override
-	public User moveUserTo(User user, String orgId) {
+	public User moveUserTo(User user, String orgId) {		
 		Organization org = orgDao.get(orgId);
 		if(org==null)
 			throw new ServiceException("指定的部门不存在！");
+		Organization old = user.getOrganization();
+		if(old!=null)
+			old.getMembers().remove(user);
 		
+		org.addMembers(user);
 		user.setOrganization(org);
 		userDao.update(user, "organization");
 		return user;

@@ -1,6 +1,8 @@
 package com.jpz.dcim.modeling.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,10 @@ import com.jpz.dcim.modeling.model.entity.User;
 import com.jpz.dcim.modeling.service.OrganizationService;
 import com.jpz.dcim.modeling.service.UserService;
 
+import pers.ksy.common.orm.MatchMode;
+import pers.ksy.common.orm.QueryCondition;
+import pers.ksy.common.orm.QueryConditionImpl;
+
 public class UserServiceTest extends BaseTestCase{	
 	@Autowired
 	UserService service;
@@ -32,7 +38,6 @@ public class UserServiceTest extends BaseTestCase{
 		service.deleteAll();
 		orgService.deleteAll();
 		//增加一个机构，并增加3个用户
-		root = new Organization();
 		root = new Organization();
 		root.setCreateTime(new Date());
 		root.setLastModifyTime(new Date());
@@ -50,7 +55,7 @@ public class UserServiceTest extends BaseTestCase{
 			user.setUsername("user_"+i);
 			user.setName("用户_"+i);
 			user.setPassword("123456");
-			user.setSex((short)1);
+			user.setSex((short) (i%2));
 			user.setCreateTime(new Date());
 			user.setLastModifyTime(new Date());
 			service.addUser(user, root.getId());
@@ -122,10 +127,27 @@ public class UserServiceTest extends BaseTestCase{
 
 	@Test
 	public void testMoveUserTo() {
-		fail("Not yet implemented");
+		User user1 = service.getUserByUsername("user_1");
+		Organization child = new Organization();
+		child.setCreateTime(new Date());
+		child.setLastModifyTime(new Date());
+		child.setDescription("测试用子部门");
+		child.setName("子部门");
+		child.setPrincipal(null);		
+		orgService.addOrg(child,root.getId());	
+		
+		service.moveUserTo(user1, child.getId());
+
+		root = orgService.getRoot();
+		child = orgService.get(child.getId());
+		
+		assertEquals(1,child.getMembers().size());
+		assertEquals(2,root.getMembers().size());
+		
+		assertEquals(child.getMembers().get(0).getUsername(),"user_1");
 	}
 
-	
+	@Test
 	public void testUpdateUser(){
 		User user1 = service.getUserByUsername("user_0");
 		user1.setName("用户100");
@@ -133,11 +155,33 @@ public class UserServiceTest extends BaseTestCase{
 		user1 = service.get(user1.getId());
 		assertEquals("用户100",user1.getName());
 	}
-	
+	@Test
 	public void testDeleteUser(){
 		User user1 = service.getUserByUsername("user_1");
 		service.delete(user1);
 		service.get(user1.getId());
 	}
+	@Test
+	public void testQueryByCondition(){
+		QueryCondition condition = new QueryConditionImpl(User.class,null);
+		condition.like("name", "用户", MatchMode.START);
+		List<User> list = service.findList(condition);
+		assertEquals(3,list.size());
+		
+		condition = new QueryConditionImpl(User.class,null);
+		condition.like("name", "用户", MatchMode.START)
+			.eq("sex", (short)0);
+		list = service.findList(condition);
+		assertEquals(2,list.size());
+		
+		condition = new QueryConditionImpl(User.class,null);
+		condition.like("name", "用户", MatchMode.START)
+			.eq("sex", (short)0)
+			.eq("organization.id", root.getId());
+		list = service.findList(condition);
+		assertEquals(2,list.size());
+	}
+	
+	
 
 }
