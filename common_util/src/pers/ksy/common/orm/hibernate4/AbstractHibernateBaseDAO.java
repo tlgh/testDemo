@@ -1,25 +1,17 @@
 package pers.ksy.common.orm.hibernate4;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import org.hibernate.LockMode;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Junction;
-import org.hibernate.criterion.Junction.Nature;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -28,6 +20,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.util.Assert;
 
 import pers.ksy.common.model.Page;
@@ -35,7 +28,6 @@ import pers.ksy.common.orm.Alias;
 import pers.ksy.common.orm.BetweenCondition;
 import pers.ksy.common.orm.Condition;
 import pers.ksy.common.orm.ConjunctionCondition;
-import pers.ksy.common.orm.InCondition;
 import pers.ksy.common.orm.IsCondition;
 import pers.ksy.common.orm.LikeCondition;
 import pers.ksy.common.orm.QueryCondition;
@@ -179,8 +171,27 @@ public abstract class AbstractHibernateBaseDAO<T, ID extends Serializable> exten
 	 * @param entity
 	 * @return
 	 */
-	protected Serializable getIdFromEntity(T entity) {
-		return getSession().getIdentifier(entity);
+	protected ID getIdFromEntity(T entity) {
+		return (ID) getSession().getIdentifier(entity);
+	}
+	
+	protected ID getIdValue(T entity) {
+		String idFiledName = getIdName();
+		try {
+			return (ID) getProperty(entity, idFiledName);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (BeansException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generdated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	protected long countByProp(String prop, Object value) {
@@ -245,15 +256,63 @@ public abstract class AbstractHibernateBaseDAO<T, ID extends Serializable> exten
 		getSession().update(entity);
 		return entity;
 	}
+	
 	@Override
-	public T update(T entity,String ... fieldNames){
-		Session s = getSession();		
-		T managed = (T) s.load(this.getEntityClass(), getIdFromEntity(entity));
-		BeanUtils.copyProperties(entity, managed, fieldNames);
-		s.update(managed);
+	public T update(T entity, String... fieldNames) {
+		return update(entity, true, fieldNames);
+	}
+	
+	@Override
+	public T update(T entity, boolean inclusive, String... fieldNames) {
+		if (null != fieldNames && fieldNames.length > 0) {
+			T managed = get((ID) getIdValue(entity));
+			copyProperties(entity, managed, inclusive, fieldNames);
+			entity = managed;
+		}
+		update(entity);
 		return entity;
 	}
+	
+	private void copyProperties(Object src, Object target, boolean inclusive, String... fieldNames) {
+		if (inclusive) {
+			for (String fieldName : fieldNames) {
+				try {
+					Object value = getProperty(src, fieldName);
+					setProperty(target, fieldName, value);
+				} catch (BeansException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			BeanUtils.copyProperties(src, target, fieldNames);
+		}
+	}
 
+	private void setProperty(Object obj, String property, Object value)
+			throws BeansException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(obj.getClass(), property);
+		if (null != descriptor && null != descriptor.getWriteMethod()) {
+			System.out.println(property + ":" + descriptor.getWriteMethod());
+			descriptor.getWriteMethod().invoke(obj, value);
+		}
+	}
+
+	private Object getProperty(Object obj, String property)
+			throws BeansException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(obj.getClass(), property);
+		if (null != descriptor && null != descriptor.getReadMethod()) {
+			System.out.println(property + ":" + descriptor.getReadMethod());;
+			return descriptor.getReadMethod().invoke(obj);
+		}
+		return null;
+	}
+	
 	@Override
 	public T saveOrUpdate(T entity) {
 		Assert.notNull(entity);

@@ -103,6 +103,9 @@ public interface HibernateBaseDAO<T, ID extends Serializable> extends JpaBaseDAO
 	 * @return
 	 */
 	public Long countByProperties(String[] propNames, Object[] propVals);
+
+
+	T update(T entity, boolean inclusive, String[] fieldNames);
 	
 	
 }
