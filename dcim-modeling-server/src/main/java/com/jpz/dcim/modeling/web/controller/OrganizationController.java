@@ -36,7 +36,8 @@ public class OrganizationController extends BaseController {
 			@SerializationFilter(target = Organization.class, fields = { "parent", "members" }),
 			@SerializationFilter(exclusive = false, target = User.class, fields = { "id", "name" }) })
 	public Object tree() {
-		return Result.successResult(organizationService.getRoot(), null);
+		Organization org = organizationService.getRoot();
+		return Result.successResult(org, null);
 	}
 
 	@RequestMapping(path = "/{organizationId}", method = RequestMethod.GET)

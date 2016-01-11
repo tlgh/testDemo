@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpz.dcim.modeling.exception.ServiceException;
@@ -20,8 +21,8 @@ import pers.ksy.common.orm.jpa.JpaHelper;
 import pers.ksy.common.orm.QueryCondition;
 import pers.ksy.common.orm.QueryConditionImpl;
 
-@Transactional
 @Service
+@Transactional(propagation=Propagation.REQUIRED)
 public class OrganizationServiceImpl extends BaseServiceImpl<Organization, String> implements OrganizationService {
 	@Autowired
 	private OrganizationDao dao;
@@ -110,7 +111,6 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, Strin
 		QueryCondition qc = new QueryConditionImpl(Organization.class, null);
 		qc.add(Conditions.is("parent.id", Type.NULL)).add(Conditions.eq("deleted", false));
 		Organization root = dao.uniqueByQC(qc);
-		traverseOrganizationTree(root);
 		return root;
 	}
 	
