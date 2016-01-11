@@ -1,7 +1,6 @@
 package com.jpz.dcim.modeling.service.impl;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -88,7 +87,4 @@ public abstract class CommonService {
 		return null;
 	}
 
-	public static void main(String[] args) {
-		System.out.println((false && false));
-	}
 }
