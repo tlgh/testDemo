@@ -32,9 +32,11 @@ define(function(require) {
 	QUnit.test("Login test", function(assert) {
 		var done = assert.async();
 		userService.login(username, password, function(result) {
-			assert.ok(result.header.success, "login success");
-			var user = userService.getCurrentUser();
-			assert.ok(user.username == username, "get currentUser success");
+			assert.ok(result.header.success, result.header.body);
+			if(result.header.success){
+				var user = userService.getCurrentUser();
+				assert.ok(user.username == username, "get currentUser success");
+			}
 			done();
 		});
 	});
