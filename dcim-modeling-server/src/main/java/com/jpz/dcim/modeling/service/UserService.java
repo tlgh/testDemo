@@ -2,6 +2,7 @@ package com.jpz.dcim.modeling.service;
 
 import java.util.List;
 
+import com.jpz.dcim.modeling.exception.ServiceException;
 import com.jpz.dcim.modeling.model.entity.User;
 
 public interface UserService extends BaseService<User,String>{
@@ -61,6 +62,15 @@ public interface UserService extends BaseService<User,String>{
 	 * @return
 	 */
 	public User getUserByUsername(String username);
+
+	/**
+	 * 用户登录
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws ServiceException
+	 */
+	User login(String username, String password) throws ServiceException;
 
 	
 }

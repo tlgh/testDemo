@@ -143,6 +143,10 @@ public class Organization extends BaseEntity {
 		this.description = description;
 	}
 
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
 	
 
 }

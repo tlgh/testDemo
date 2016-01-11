@@ -3,7 +3,6 @@ package com.jpz.dcim.modeling.model.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -343,6 +342,18 @@ public class BaseDaoTest extends BaseTestCase {
 		dao.deleteAll();
 		List<User> list = dao.findAll();
 		assertEquals(0, list.size());
+	}
+	
+	@Test
+	public void testUpdateTArray() {
+		User u = new User();
+		u.setId(user.getId());
+		u.setName("new Name");
+		u.setSex((short) 1);
+		User newUser = dao.update(u, "name");
+		assertNotNull(newUser);
+		assertEquals("new Name", newUser.getName());
+		assertEquals(false, new Short((short) 1).equals(newUser.getUsername()));
 	}
 
 }

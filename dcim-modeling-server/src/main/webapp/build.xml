@@ -56,7 +56,6 @@ initDataToDatabase: as name
 		<java classname="com.jpz.dcim.modeling.init.SqlInit" fork="true" failonerror="true">
 			<sysproperty key="file.encoding" value="UTF-8" />  
 			<arg value="initUser.sql"/>
-			<arg value="initOrg.sql"/>
 			<classpath refid="project.class.path" />
 		</java>
 		

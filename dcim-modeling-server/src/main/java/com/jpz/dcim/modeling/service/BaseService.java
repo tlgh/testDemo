@@ -53,7 +53,7 @@ public interface BaseService<T,ID extends Serializable> {
 	 * @param fieldNames
 	 * @return
 	 */
-	public T update(T entity,String ... fieldNames);
+	public T update(T entity, String ... fieldNames);
 
 	/**
 	 * 保存或更新对象
@@ -61,6 +61,13 @@ public interface BaseService<T,ID extends Serializable> {
 	 * @return 实体对象
 	 */
 	public T saveOrUpdate(T entity);
+	
+	/**
+	 * 保存或更新对象
+	 * @param entity 实体对象
+	 * @return 实体对象
+	 */
+	public T saveOrUpdate(T entity, String ... fieldNames);
 
 	/**
 	 * 删除对象

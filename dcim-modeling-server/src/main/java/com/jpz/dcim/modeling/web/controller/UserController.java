@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jpz.dcim.modeling.model.entity.Organization;
+import com.jpz.dcim.modeling.model.entity.User;
+
 import pers.ksy.common.annotation.SerializationFilter;
 import pers.ksy.common.annotation.SerializationFilters;
 import pers.ksy.common.model.Result;
@@ -15,16 +18,13 @@ import pers.ksy.common.orm.Conditions;
 import pers.ksy.common.orm.MatchMode;
 import pers.ksy.common.orm.QueryCondition;
 import pers.ksy.common.orm.QueryConditionImpl;
-
-import com.jpz.dcim.modeling.model.entity.Organization;
-import com.jpz.dcim.modeling.model.entity.User;
-import com.jpz.dcim.modeling.service.PartyService;
+import com.jpz.dcim.modeling.service.UserService;
 
 @RestController
 @RequestMapping(value = "/user")
 public class UserController extends BaseController {
 	@Autowired
-	private PartyService userService;
+	private UserService userService;
 
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	@SerializationFilters(filters = { @SerializationFilter(target = User.class, fields = { "password", "roles" }),
@@ -43,14 +43,15 @@ public class UserController extends BaseController {
 		if (null != name) {
 			queryCondition.add(Conditions.like("name", name, MatchMode.ANYWHERE));
 		}
-		return userService.findPage(pageIndex, pageSize, queryCondition);
+
+		return userService.findByPage(queryCondition, pageIndex, pageSize);
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.GET)
 	@SerializationFilters(filters = { @SerializationFilter(target = User.class, fields = { "password", "roles" }),
 			@SerializationFilter(target = Organization.class, exclusive = false, fields = { "id", "name" }) })
 	public Object get(@PathVariable String userId) {
-		return Result.successResult(userService.getUser(userId), null);
+		return Result.successResult(userService.get(userId), null);
 	}
 
 	@RequestMapping(path = "/", method = RequestMethod.POST)
@@ -62,13 +63,13 @@ public class UserController extends BaseController {
 	@RequestMapping(path = "/{userId}", method = RequestMethod.PUT)
 	public Object update(@PathVariable String userId, @RequestBody User user) {
 		user.setId(userId);
-		userService.updateUser(user);
+		userService.update(user);
 		return Result.successResult("更新成功");
 	}
 
 	@RequestMapping(path = "/{userId}", method = RequestMethod.DELETE)
 	public Object delete(@PathVariable String userId) {
-		userService.deleteUser(userId);
+		userService.deleteById(userId);
 		return Result.successResult("删除成功");
 	}
 }

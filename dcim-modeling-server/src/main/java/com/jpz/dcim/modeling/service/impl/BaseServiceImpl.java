@@ -1,42 +1,72 @@
 package com.jpz.dcim.modeling.service.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpz.dcim.modeling.model.entity.BaseEntity;
 import com.jpz.dcim.modeling.service.BaseService;
 
+import pers.ksy.common.ArrayUtil;
+import pers.ksy.common.StringUtil;
 import pers.ksy.common.model.Page;
 import pers.ksy.common.orm.Order;
 import pers.ksy.common.orm.QueryCondition;
 
-
 @Transactional
-public abstract class BaseServiceImpl<T ,ID extends Serializable> implements BaseService<T,ID> {	
+public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable> implements BaseService<T, ID> {
 	public T get(ID id) {
 		return getDao().get(id);
 	}
 
 	public T save(T t) {
+		t.setCreateTime(new Date());
 		return getDao().save(t);
 	}
 
 	public Serializable saveAny(Serializable t) {
 		return getDao().saveAny(t);
 	}
-
+	
 	public T update(T entity) {
 		return getDao().update(entity);
 	}
-	
-	public T update(T entity,String... fieldNames){
-		return getDao().update(entity,fieldNames);
+
+	public T update(T entity, String... fieldNames) {
+		entity.setLastModifyTime(new Date());
+		String[] fields = new String[] { "lastModifyTime" };
+		if (null != fieldNames) {
+			fields = ArrayUtil.addAll(fields, fieldNames);
+		}
+		return getDao().update(entity, fieldNames);
+	}
+
+	public T update(T entity, boolean inclusive, String... fieldNames) {
+		if (!inclusive) {
+			String[] fields = new String[] { "id", "createTime" };
+			if (null != fieldNames) {
+				fields = ArrayUtil.addAll(fields, fieldNames);
+			}
+			fieldNames = fields;
+		}
+		return getDao().update(entity, inclusive, fieldNames);
 	}
 
 	public T saveOrUpdate(T entity) {
 		return getDao().saveOrUpdate(entity);
+	}
+	 
+
+	public T saveOrUpdate(T entity, String... fieldNames) {
+		if (StringUtil.notEmpty(entity.getId())) {
+			update(entity, fieldNames);
+		} else {
+			save(entity);
+		}
+		return entity;
 	}
 
 	public T delete(T entity) {
@@ -123,13 +153,11 @@ public abstract class BaseServiceImpl<T ,ID extends Serializable> implements Bas
 	public Long countByProperties(String[] propNames, Object[] propVals) {
 		return getDao().countByProperties(propNames, propVals);
 	}
-	
-	
+
 	public void deleteAll() {
 		getDao().deleteAll();
 	}
 
-	
 	@Override
 	public List<T> findList(QueryCondition qc) {
 		return getDao().listByQC(qc);
@@ -150,5 +178,4 @@ public abstract class BaseServiceImpl<T ,ID extends Serializable> implements Bas
 		return getDao().countByQC(qc);
 	}
 
-	
 }
