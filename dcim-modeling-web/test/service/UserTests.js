@@ -126,7 +126,7 @@ define(function(require) {
 		userService.organizationTree(function(result) {
 			assert.ok(result.header.success, "organizationTree success");
 			var existing = false;
-			var root = result.body[0];
+			var root = result.body;
 			$.each(root.children, function() {
 				if (this.id == orgId) {
 					existing = true;

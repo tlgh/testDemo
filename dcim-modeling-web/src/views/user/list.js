@@ -64,12 +64,12 @@ define(['service/user', 'ZY'], function(userService) {
 	});
 
 	userService.organizationTree(function(result) {
-		console.log(result.body[0]);
+		//console.log(result.body[0]);
 		tree = new ZY.UI.Tree("treeBox", {
 			children: "children",
 			view: "name",
 			extendedStyle: "accessible"
-		}, result.body[0]);
+		}, result.body);
 		tree.children[0].open();
 		tree.onChanged = function(node) {
 			if (node.focused)
