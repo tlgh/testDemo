@@ -47,7 +47,7 @@ public class Organization extends BaseEntity {
 	/**
 	 * 逻辑删除标记
 	 */
-	@Column(name="isDeleted", nullable=false )
+	@Column(name="deleted", nullable=false )
 	private Boolean deleted=false;
 	
 	@Transient

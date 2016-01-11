@@ -12,11 +12,6 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
         
-        
-        
-        
-        
-   
     
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
