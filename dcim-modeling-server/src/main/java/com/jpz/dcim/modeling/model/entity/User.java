@@ -62,6 +62,7 @@ public class User extends BaseEntity{
 	/**
 	 * 逻辑删除标记
 	 */
+	
 	private boolean deleted=false;
 	
 	/**

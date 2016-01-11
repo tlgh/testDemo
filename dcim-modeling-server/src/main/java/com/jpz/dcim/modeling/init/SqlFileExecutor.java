@@ -50,7 +50,8 @@ public class SqlFileExecutor {
         Statement stmt = null;  
         List<String> sqlList = loadSql(sqlFile);  
         stmt = conn.createStatement();  
-        for (String sql : sqlList) {  
+        for (String sql : sqlList) { 
+        	
             stmt.addBatch(sql);  
         }  
         int[] rows = stmt.executeBatch();  
