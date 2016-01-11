@@ -25,21 +25,29 @@ public abstract class PropertiesSupport implements Serializable {
     private Properties properties = new Properties();;
     private File file;
 
-    public File path() {
-        File file = null;
-        if (getClass().isAnnotationPresent(Prop.class)) {
-            Prop prop = this.getClass().getAnnotation(Prop.class);
-            try {
-                URI uri = getClass().getResource("/").toURI();
-                File root = new File(uri);
-                String fileName = prop.path();
-                file = new File(root, fileName);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-        return file;
-    }
+	public File path() {
+		File file = null;
+		if (getClass().isAnnotationPresent(Prop.class)) {
+			Prop prop = this.getClass().getAnnotation(Prop.class);
+			try {
+				URI uri = getClass().getResource("/").toURI();
+				File root = null;
+				try {
+					root = new File(uri);
+				} catch (Exception e) {
+					root = new File(".");
+					e.printStackTrace();
+				}
+				if (null != root) {
+					String fileName = prop.path();
+					file = new File(root, fileName);
+				}
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		}
+		return file;
+	}
 
     public synchronized void load() throws IOException {
         FileInputStream in = null;
