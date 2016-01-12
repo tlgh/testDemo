@@ -10,7 +10,7 @@ define([
 		initialize: function() {
 			// define Constants
 			App.Constants.SESSION_USER_KEY = 'currentLoginUser';
-			App.Constants.BASE_PATH = 'http://127.0.0.1:8080/dcimServer/api';
+			App.Constants.BASE_PATH = 'http://127.0.0.1:8080/dcim-modeling-server/api';
 
 			ajaxGlobalSetting();
 
