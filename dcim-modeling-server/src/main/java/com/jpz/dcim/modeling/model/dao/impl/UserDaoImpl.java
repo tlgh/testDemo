@@ -8,10 +8,7 @@ import com.jpz.dcim.modeling.model.entity.User;
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User, String> implements UserDao {
 
-	@Override
-	protected Class<User> getEntityClass() {
-		return User.class;
-	}
+	
 
 	@Override
 	public void method4Test() {

@@ -1,4 +1,4 @@
-.zy_tree{width:auto;flex:1 1 auto;padding:0px;overflow:auto;}
+.zy_tree{width:auto;height:auto;padding:0px;overflow:auto;}
 .zy_tree .childrenBox{padding:0px;margin:0px;}
 .zy_tree .node{height:24px;clear:both;}
 .zy_tree .node .title{

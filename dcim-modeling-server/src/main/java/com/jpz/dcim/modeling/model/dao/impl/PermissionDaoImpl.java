@@ -9,10 +9,5 @@ import com.jpz.dcim.modeling.model.entity.Permission;
 public class PermissionDaoImpl extends BaseDaoImpl<Permission, String>
 		implements PermissionDao {
 
-	@Override
-	protected Class<Permission> getEntityClass() {
-		return Permission.class;
-	}
-
 
 }
