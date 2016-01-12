@@ -3,7 +3,7 @@
 2.qunit gulp 等 工具npm依赖初始化
 	cnpm install
 3.gulp全局安装
-	cnpm install grunt-cli -g
+	cnpm install gulp -g
 4.项目运行(开发环境)(不必依赖上述环境)
 	直接访问src/index.html
 5.项目测试

@@ -8,9 +8,5 @@ import com.jpz.dcim.modeling.model.entity.Role;
 @Repository
 public class RoleDaoImpl extends BaseDaoImpl<Role, String> implements RoleDao {
 
-	@Override
-	protected Class<Role> getEntityClass() {
-		return Role.class;
-	}
 
 }

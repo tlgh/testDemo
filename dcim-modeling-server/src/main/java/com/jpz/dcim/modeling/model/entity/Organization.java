@@ -146,7 +146,17 @@ public class Organization extends BaseEntity {
 	public Boolean getDeleted() {
 		return deleted;
 	}
-
 	
+	
+	@Transient
+	private String treeNodeType="department";
 
+	public String getTreeNodeType() {
+		return treeNodeType;
+	}
+
+	public void setTreeNodeType(String treeNodeType) {
+		this.treeNodeType = treeNodeType;
+	}
+	
 }

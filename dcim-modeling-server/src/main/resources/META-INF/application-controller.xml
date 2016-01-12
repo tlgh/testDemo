@@ -22,7 +22,18 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-
+	
+	 <mvc:interceptors> 
+        <bean name="openSessionInViewInterceptor"
+	        class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">
+	        <property name="sessionFactory">
+	            <ref bean="sessionFactory" />
+	        </property>
+	    </bean>
+    </mvc:interceptors>
+	
+	
+	
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->

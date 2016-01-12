@@ -3,6 +3,8 @@ package pers.ksy.common.orm.hibernate4;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -154,7 +156,15 @@ public abstract class AbstractHibernateBaseDAO<T, ID extends Serializable> exten
 	 * 
 	 * @return
 	 */
-	abstract protected Class<T> getEntityClass();
+	private Class entityClass = null;
+	protected Class<T> getEntityClass(){
+		if(entityClass==null){
+			Type genType = getClass().getGenericSuperclass();  
+	        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();  
+	        this.entityClass = (Class) params[0];
+		}
+		return this.entityClass;
+	}
 
 	/**
 	 * 获取当前DAO对应entity的Id字段名
